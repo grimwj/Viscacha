@@ -1,0 +1,15 @@
+Start of experiment, 20190702_0128
+Source file name: example6.txt
+Screen resolution h: 1920
+Screen resolution v: 1080
+Diagonal inch: 27,0
+Horizontal angle: 55,3
+Screen height mm: 336,2211581400089
+Screen width mm: 597,7265033600158
+Distance mm: 570,4596247871616
+Pixel to angle multiplier: 0,028802083333333332
+Patient name: TestPatient
+Data loaded, variable PARAM = Field_Scale21
+Experiment type = Staircase
+Starting experiment number 1...
+Trial;Duration;Selection;Correct;Success;Experimentator;External Stimuli;Reversal;Staircase level

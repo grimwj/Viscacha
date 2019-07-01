@@ -1,0 +1,70 @@
+
+/Log number 1/
+Logger begins
+
+/Log number 2/
+Display layer initialized
+
+/Log number 3/
+Configuration file loaded
+
+/Log number 4/
+Stimuli definition file loaded
+
+/Log number 5/
+New staircase experiment begins
+
+/Log number 6/
+Scanning for USB feeder
+
+/Log number 7/
+jssc.SerialPortException: Port name - COM3; Method name - closePort(); Exception type - Port not opened.
+	at jssc.SerialPort.checkPortOpened(SerialPort.java:878)
+	at jssc.SerialPort.closePort(SerialPort.java:1088)
+	at vizcacha2.SerialComm.CloseSerialComm(SerialComm.java:250)
+	at vizcacha2.SerialComm.ScanPortsForFeeder(SerialComm.java:129)
+	at vizcacha2.Scanner_Thread.run(SerialComm.java:339)
+
+
+/Log number 8/
+S key pressed
+
+/Log number 9/
+New staricase trial begins
+
+/Log number 10/
+ESC pressed
+
+/Log number 11/
+jssc.SerialPortException: Port name - COM3; Method name - closePort(); Exception type - Port not opened.
+	at jssc.SerialPort.checkPortOpened(SerialPort.java:878)
+	at jssc.SerialPort.closePort(SerialPort.java:1088)
+	at vizcacha2.SerialComm.CloseSerialComm(SerialComm.java:250)
+	at vizcacha2.Keyboard_inputs.Keyboard_ESC_Action(Keyboard_inputs.java:150)
+	at vizcacha2.Keyboard_inputs.access$000(Keyboard_inputs.java:9)
+	at vizcacha2.Keyboard_inputs$1.dispatchKeyEvent(Keyboard_inputs.java:75)
+	at java.desktop/java.awt.DefaultKeyboardFocusManager.preDispatchKeyEvent(DefaultKeyboardFocusManager.java:1133)
+	at java.desktop/java.awt.DefaultKeyboardFocusManager.typeAheadAssertions(DefaultKeyboardFocusManager.java:1009)
+	at java.desktop/java.awt.DefaultKeyboardFocusManager.dispatchEvent(DefaultKeyboardFocusManager.java:835)
+	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2321)
+	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2762)
+	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4840)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:772)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:95)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:745)
+	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:743)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:389)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:742)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
