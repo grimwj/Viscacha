@@ -18,9 +18,9 @@ Experiment_Repeat=2
 Experiment_Type=Staircase
 Staircase_Definition 
 {
-    Easiest=0.5
-    Hardest=1
-    Start=0.6
+    Easiest=0
+    Hardest=45
+    Start=10
     Max_Reversals=4
     Factor=0.1
     Min_Reversals=4
@@ -42,45 +42,32 @@ Positive
 	# bottom layer, underneath Shape & Noise
 	Background
 	{
-		# 0 - none 
-		# 1 - dots
-		Type=1
-		# px/s 
-		Speed=0
-		Direction=270
-		Coherence=1
-		# px, min 8 max 40
-		Dot_Size=8
-		# 255 - white, 0 - black
-		Dot_Color=255
-		Dot_Max_Count=5000
-		# 0 for infinite
-		Life_Time=1000
-		Dot_Color_Threshold = 1
+		Type=2
+		Background_Color=0
+		Speed=20
+		Direction=45
+		Width=15
+		Amplitude=0.4
+		Medium_Value=0.5
+		Mask=1
+		Duty=0.5
 	}
 
 	# medium layer, underneath Noise, over Background
 	Shape
 	{
-		Field_Scale=1
-		Scale=1
-		Background_Color=0
+		Horizontal_Offset=110
 		Ellipse_X=100
 		Ellipse_Y=100
 
-        	1-dots
-        	Type=1
-
-		Horizontal_Offset=110
-
-		Speed=0
-		Direction=90
-		Coherence=1
-		Dot_Size=6
-		Dot_Color=255
-		Dot_Max_Count=5000
-		Life_Time=1000
-		Dot_Color_Threshold = 1
+		Type=2
+		Speed=20
+		Direction=45
+		Width=15
+		Amplitude=0.4
+		Medium_Value=0.5
+		Mask=3
+		Duty=0.5
 	}
 
 	# top layer, over Background & Shape
@@ -89,8 +76,6 @@ Positive
 		# 0 - none 
 		# 1 - dots
 		Type=0
-		Speed_X=0
-		Speed_Y=0
 		Dot_Size=4
 		Dot_Color=128
 		Dot_Max_Count=2000
@@ -103,16 +88,13 @@ Negative
 {
 	Background
 	{
-		Direction=270
+		Direction=45
 	}
 	Shape
 	{
 		Horizontal_Offset=110
-		Direction=90
-		Field_Scale = PARAM
-		#Scale = PARAM
-		#Ellipse_Y=PARAM
-		#Background_Color=0
+		Speed=20
+		Direction=PARAM
 	}
 }
 
