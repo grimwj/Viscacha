@@ -411,10 +411,6 @@ public class VizPanel extends JPanel
             LeftPanelNoiseRectAnimation = new RectAnimation(screen_width/2, screen_height, LeftPanelNoiseMedium_Value, LeftPanelNoiseAmplitude, LeftPanelNoiseSpeed, LeftPanelNoiseDirection, LeftPanelNoiseWidth, LeftPanelNoiseDuty, LeftPanelNoiseMask, LeftPanelNoiseDashedLength, LeftPanelNoiseDashedSpacing);
         }
         
-        System.out.println("/////////////////////////////");
-        System.out.println(LeftPanelBackgroundDashedLength + " " + LeftPanelBackgroundDashedSpacing);
-        System.out.println("/////////////////////////////");
-        
         x0 = screen_width/2 + 2*LeftPanelBackgroundDotSize;
         y0 = 0;
         x1 = screen_width;
