@@ -76,6 +76,8 @@ public class VizPanel extends JPanel
     int LeftPanelBackgroundDotColor2;
     double LeftPanelBackgroundDotColorThreshold;
     double LeftPanelBackgroundLifeTimeS;
+    int LeftPanelBackgroundDashedLength;
+    int LeftPanelBackgroundDashedSpacing;
     
     double LeftPanelBackgroundMedium_Value;
     double LeftPanelBackgroundAmplitude;    
@@ -94,6 +96,8 @@ public class VizPanel extends JPanel
     int RightPanelBackgroundDotColor2;
     double RightPanelBackgroundDotColorThreshold;
     double RightPanelBackgroundLifeTimeS;
+    int RightPanelBackgroundDashedLength;
+    int RightPanelBackgroundDashedSpacing;
     
     double RightPanelBackgroundMedium_Value;
     double RightPanelBackgroundAmplitude;    
@@ -132,6 +136,8 @@ public class VizPanel extends JPanel
     int LeftPanelShapeDotColor2;
     double LeftPanelShapeDotColorThreshold;
     double LeftPanelShapeLifeTimeS;
+    int LeftPanelShapeDashedLength;
+    int LeftPanelShapeDashedSpacing;
 
     double RightPanelShapeMedium_Value;
     double RightPanelShapeAmplitude;
@@ -152,6 +158,8 @@ public class VizPanel extends JPanel
     int RightPanelShapeDotColor2;
     double RightPanelShapeDotColorThreshold;
     double RightPanelShapeLifeTimeS;
+    int RightPanelShapeDashedLength;
+    int RightPanelShapeDashedSpacing;
     
     
     int LeftPanelNoiseDotSize;
@@ -165,6 +173,8 @@ public class VizPanel extends JPanel
     int LeftPanelNoiseDotColor2;
     double LeftPanelNoiseDotColorThreshold;
     double LeftPanelNoiseLifeTimeS;
+    int LeftPanelNoiseDashedLength;
+    int LeftPanelNoiseDashedSpacing;
     
     int LeftPanelNoiseEllipseX = 0;
     int LeftPanelNoiseEllipseY = 0;
@@ -192,7 +202,9 @@ public class VizPanel extends JPanel
     double RightPanelNoiseAmplitude;    
     int RightPanelNoiseWidth;
     double RightPanelNoiseDuty;
-    int RightPanelNoiseMask; 
+    int RightPanelNoiseMask;
+    int RightPanelNoiseDashedLength;
+    int RightPanelNoiseDashedSpacing;
     
     // parameter values
     double param_value;
@@ -376,28 +388,32 @@ public class VizPanel extends JPanel
         }
         if (LeftPanelBackgroundType.equals("2"))
         {
-            LeftPanelBackgroundSineAnimation = new SineAnimation(screen_width/2, screen_height, LeftPanelBackgroundMedium_Value, LeftPanelBackgroundAmplitude, LeftPanelBackgroundSpeed, LeftPanelBackgroundDirection, LeftPanelBackgroundWidth, LeftPanelBackgroundMask);
+            LeftPanelBackgroundSineAnimation = new SineAnimation(screen_width/2, screen_height, RightPanelBackgroundMedium_Value, RightPanelBackgroundAmplitude, RightPanelBackgroundSpeed, RightPanelBackgroundDirection, RightPanelBackgroundWidth, RightPanelBackgroundMask);
         }
         if (LeftPanelBackgroundType.equals("3"))
         {
-            LeftPanelBackgroundRectAnimation = new RectAnimation(screen_width/2, screen_height, LeftPanelBackgroundMedium_Value, LeftPanelBackgroundAmplitude, LeftPanelBackgroundSpeed, LeftPanelBackgroundDirection, LeftPanelBackgroundWidth, LeftPanelBackgroundDuty, LeftPanelBackgroundMask);
+            LeftPanelBackgroundRectAnimation = new RectAnimation(screen_width/2, screen_height, RightPanelBackgroundMedium_Value, RightPanelBackgroundAmplitude, RightPanelBackgroundSpeed, RightPanelBackgroundDirection, RightPanelBackgroundWidth, RightPanelBackgroundDuty, RightPanelBackgroundMask, RightPanelBackgroundDashedLength, RightPanelBackgroundDashedSpacing);
         }
         if (LeftPanelShapeType.equals("2"))
         {
-            LeftPanelShapeSineAnimation = new SineAnimation(LeftPanelShapeEllipseX, LeftPanelShapeEllipseY, LeftPanelShapeMedium_Value, LeftPanelShapeAmplitude, LeftPanelShapeSpeed, LeftPanelShapeDirection, LeftPanelShapeWidth, LeftPanelShapeMask);
+            LeftPanelShapeSineAnimation = new SineAnimation(LeftPanelShapeEllipseX, LeftPanelShapeEllipseY, RightPanelShapeMedium_Value, RightPanelShapeAmplitude, RightPanelShapeSpeed, RightPanelShapeDirection, RightPanelShapeWidth, RightPanelShapeMask);
         }
         if (LeftPanelShapeType.equals("3"))
         {
-            LeftPanelShapeRectAnimation = new RectAnimation(LeftPanelShapeEllipseX, LeftPanelShapeEllipseY, LeftPanelShapeMedium_Value, LeftPanelShapeAmplitude, LeftPanelShapeSpeed, LeftPanelShapeDirection, LeftPanelShapeWidth, LeftPanelShapeDuty, LeftPanelShapeMask);
-        }
+            LeftPanelShapeRectAnimation = new RectAnimation(LeftPanelShapeEllipseX, LeftPanelShapeEllipseY, RightPanelShapeMedium_Value, RightPanelShapeAmplitude, RightPanelShapeSpeed, RightPanelShapeDirection, RightPanelShapeWidth, RightPanelShapeDuty, RightPanelShapeMask, RightPanelShapeDashedLength, RightPanelShapeDashedSpacing);
+        }        
         if (LeftPanelNoiseType.equals("2"))
         {
             LeftPanelNoiseSineAnimation = new SineAnimation(screen_width/2, screen_height, LeftPanelNoiseMedium_Value, LeftPanelNoiseAmplitude, LeftPanelNoiseSpeed, LeftPanelNoiseDirection, LeftPanelNoiseWidth, LeftPanelNoiseMask);
         }
         if (LeftPanelNoiseType.equals("3"))
         {
-            LeftPanelNoiseRectAnimation = new RectAnimation(screen_width/2, screen_height, LeftPanelNoiseMedium_Value, LeftPanelNoiseAmplitude, LeftPanelNoiseSpeed, LeftPanelNoiseDirection, LeftPanelNoiseWidth, LeftPanelNoiseDuty, LeftPanelNoiseMask);
+            LeftPanelNoiseRectAnimation = new RectAnimation(screen_width/2, screen_height, LeftPanelNoiseMedium_Value, LeftPanelNoiseAmplitude, LeftPanelNoiseSpeed, LeftPanelNoiseDirection, LeftPanelNoiseWidth, LeftPanelNoiseDuty, LeftPanelNoiseMask, LeftPanelNoiseDashedLength, LeftPanelNoiseDashedSpacing);
         }
+        
+        System.out.println("/////////////////////////////");
+        System.out.println(LeftPanelBackgroundDashedLength + " " + LeftPanelBackgroundDashedSpacing);
+        System.out.println("/////////////////////////////");
         
         x0 = screen_width/2 + 2*LeftPanelBackgroundDotSize;
         y0 = 0;
@@ -447,7 +463,7 @@ public class VizPanel extends JPanel
         }
         if (RightPanelBackgroundType.equals("3"))
         {
-            RightPanelBackgroundRectAnimation = new RectAnimation(screen_width/2, screen_height, RightPanelBackgroundMedium_Value, RightPanelBackgroundAmplitude, RightPanelBackgroundSpeed, RightPanelBackgroundDirection, RightPanelBackgroundWidth, RightPanelBackgroundDuty, RightPanelBackgroundMask);
+            RightPanelBackgroundRectAnimation = new RectAnimation(screen_width/2, screen_height, RightPanelBackgroundMedium_Value, RightPanelBackgroundAmplitude, RightPanelBackgroundSpeed, RightPanelBackgroundDirection, RightPanelBackgroundWidth, RightPanelBackgroundDuty, RightPanelBackgroundMask, RightPanelBackgroundDashedLength, RightPanelBackgroundDashedSpacing);
         }
         if (RightPanelShapeType.equals("2"))
         {
@@ -455,15 +471,15 @@ public class VizPanel extends JPanel
         }
         if (RightPanelShapeType.equals("3"))
         {
-            RightPanelShapeRectAnimation = new RectAnimation(RightPanelShapeEllipseX, RightPanelShapeEllipseY, RightPanelShapeMedium_Value, RightPanelShapeAmplitude, RightPanelShapeSpeed, RightPanelShapeDirection, RightPanelShapeWidth, RightPanelShapeDuty, RightPanelShapeMask);
-        }
+            RightPanelShapeRectAnimation = new RectAnimation(RightPanelShapeEllipseX, RightPanelShapeEllipseY, RightPanelShapeMedium_Value, RightPanelShapeAmplitude, RightPanelShapeSpeed, RightPanelShapeDirection, RightPanelShapeWidth, RightPanelShapeDuty, RightPanelShapeMask, RightPanelShapeDashedLength, RightPanelShapeDashedSpacing);
+        }        
         if (RightPanelNoiseType.equals("2"))
         {
             RightPanelNoiseSineAnimation = new SineAnimation(screen_width/2, screen_height, RightPanelNoiseMedium_Value, RightPanelNoiseAmplitude, RightPanelNoiseSpeed, RightPanelNoiseDirection, RightPanelNoiseWidth, RightPanelNoiseMask);
         }
         if (RightPanelNoiseType.equals("3"))
         {
-            RightPanelNoiseRectAnimation = new RectAnimation(screen_width/2, screen_height, RightPanelNoiseMedium_Value, RightPanelNoiseAmplitude, RightPanelNoiseSpeed, RightPanelNoiseDirection, RightPanelNoiseWidth, RightPanelNoiseDuty, RightPanelNoiseMask);
+            RightPanelNoiseRectAnimation = new RectAnimation(screen_width/2, screen_height, RightPanelNoiseMedium_Value, RightPanelNoiseAmplitude, RightPanelNoiseSpeed, RightPanelNoiseDirection, RightPanelNoiseWidth, RightPanelNoiseDuty, RightPanelNoiseMask, RightPanelNoiseDashedLength, RightPanelNoiseDashedSpacing);
         }
         
         VizPanel_StartAnimation();
@@ -493,6 +509,8 @@ public class VizPanel extends JPanel
             LeftPanelBackgroundWidth = Vizcacha2.reader.Positive_Background_Width;
             LeftPanelBackgroundDuty = Vizcacha2.reader.Positive_Background_Duty;
             LeftPanelBackgroundMask = Vizcacha2.reader.Positive_Background_Mask;
+            LeftPanelBackgroundDashedLength = Vizcacha2.reader.Positive_Background_Dashed_Length;
+            LeftPanelBackgroundDashedSpacing = Vizcacha2.reader.Positive_Background_Dashed_Spacing;            
             
             LeftPanelShapeBackgroundColor = Vizcacha2.reader.Positive_Shape_Background_Color;
             
@@ -519,6 +537,8 @@ public class VizPanel extends JPanel
             LeftPanelShapeWidth = Vizcacha2.reader.Positive_Shape_Width;
             LeftPanelShapeDuty = Vizcacha2.reader.Positive_Shape_Duty;
             LeftPanelShapeMask = Vizcacha2.reader.Positive_Shape_Mask;
+            LeftPanelShapeDashedLength = Vizcacha2.reader.Positive_Shape_Dashed_Length;
+            LeftPanelShapeDashedSpacing = Vizcacha2.reader.Positive_Shape_Dashed_Spacing;
             
             LeftPanelNoiseType = Vizcacha2.reader.Positive_Noise_Type;
             LeftPanelNoiseDotSize = (int) Vizcacha2.reader.Positive_Noise_Dot_Size;
@@ -538,6 +558,9 @@ public class VizPanel extends JPanel
             LeftPanelNoiseWidth = Vizcacha2.reader.Positive_Noise_Width;
             LeftPanelNoiseDuty = Vizcacha2.reader.Positive_Noise_Duty;
             LeftPanelNoiseMask = Vizcacha2.reader.Positive_Noise_Mask;
+            LeftPanelNoiseDashedLength = Vizcacha2.reader.Positive_Noise_Dashed_Length;
+            LeftPanelNoiseDashedSpacing = Vizcacha2.reader.Positive_Noise_Dashed_Spacing;
+
         }
         if (side.equals("right"))
         {
@@ -561,6 +584,8 @@ public class VizPanel extends JPanel
             RightPanelBackgroundWidth = Vizcacha2.reader.Positive_Background_Width;
             RightPanelBackgroundDuty = Vizcacha2.reader.Positive_Background_Duty;
             RightPanelBackgroundMask = Vizcacha2.reader.Positive_Background_Mask;
+            RightPanelBackgroundDashedLength = Vizcacha2.reader.Positive_Background_Dashed_Length;
+            RightPanelBackgroundDashedSpacing = Vizcacha2.reader.Positive_Background_Dashed_Spacing;
             
             RightPanelShapeBackgroundColor = Vizcacha2.reader.Positive_Shape_Background_Color;
             
@@ -587,6 +612,8 @@ public class VizPanel extends JPanel
             RightPanelShapeWidth = Vizcacha2.reader.Positive_Shape_Width;
             RightPanelShapeDuty = Vizcacha2.reader.Positive_Shape_Duty;
             RightPanelShapeMask = Vizcacha2.reader.Positive_Shape_Mask;
+            RightPanelShapeDashedLength = Vizcacha2.reader.Positive_Shape_Dashed_Length;
+            RightPanelShapeDashedSpacing = Vizcacha2.reader.Positive_Shape_Dashed_Spacing;
             
             RightPanelNoiseType = Vizcacha2.reader.Positive_Noise_Type;
             RightPanelNoiseDotSize = (int) Vizcacha2.reader.Positive_Noise_Dot_Size;
@@ -606,6 +633,8 @@ public class VizPanel extends JPanel
             RightPanelNoiseWidth = Vizcacha2.reader.Positive_Noise_Width;
             RightPanelNoiseDuty = Vizcacha2.reader.Positive_Noise_Duty;
             RightPanelNoiseMask = Vizcacha2.reader.Positive_Noise_Mask;
+            RightPanelNoiseDashedLength = Vizcacha2.reader.Positive_Noise_Dashed_Length;
+            RightPanelNoiseDashedSpacing = Vizcacha2.reader.Positive_Noise_Dashed_Spacing;
         }
     }
     
@@ -724,7 +753,20 @@ public class VizPanel extends JPanel
                 LeftPanelBackgroundLifeTimeS = (int) param_value;
                 positive_value = Vizcacha2.reader.Positive_Background_Life_Time;
             }
-            
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Background_Dashed_Length_String+Vizcacha2.reader.Automaton_State_Negative_Background) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    RightPanelBackgroundDashedLength = (int) param_value;
+                LeftPanelBackgroundDashedLength = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Background_Dashed_Length;
+            }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Background_Dashed_Spacing_String+Vizcacha2.reader.Automaton_State_Negative_Noise) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    RightPanelBackgroundDashedSpacing = (int) param_value;
+                LeftPanelBackgroundDashedSpacing = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Background_Dashed_Spacing;
+            }               
             
             
             if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Shape_Horizontal_Offset_String+Vizcacha2.reader.Automaton_State_Negative_Shape) )
@@ -881,6 +923,21 @@ public class VizPanel extends JPanel
                 LeftPanelShapeLifeTimeS = (int) param_value;
                 positive_value = Vizcacha2.reader.Positive_Shape_Life_Time;
             }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Shape_Dashed_Length_String+Vizcacha2.reader.Automaton_State_Negative_Shape) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    RightPanelShapeDashedLength = (int) param_value;
+                LeftPanelShapeDashedLength = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Shape_Dashed_Length;
+            }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Shape_Dashed_Spacing_String+Vizcacha2.reader.Automaton_State_Negative_Shape) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    RightPanelShapeDashedSpacing = (int) param_value;
+                LeftPanelShapeDashedSpacing = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Shape_Dashed_Spacing;
+            }
+                        
             //System.out.println(Vizcacha2.reader.PARAM + " ---------------------------------- ");
             //System.out.println((Vizcacha2.reader.Stimuli_Noise_Coherence_String+Vizcacha2.reader.Automaton_State_Negative_Noise) + " ---------------------------------- ");
             if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Noise_Coherence_String+Vizcacha2.reader.Automaton_State_Negative_Noise) )
@@ -947,6 +1004,20 @@ public class VizPanel extends JPanel
                 LeftPanelNoiseLifeTimeS = (int) param_value;
                 positive_value = Vizcacha2.reader.Positive_Noise_Life_Time;
             }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Noise_Dashed_Length_String+Vizcacha2.reader.Automaton_State_Negative_Noise) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    RightPanelNoiseDashedLength = (int) param_value;
+                LeftPanelNoiseDashedLength = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Noise_Dashed_Length;
+            }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Noise_Dashed_Spacing_String+Vizcacha2.reader.Automaton_State_Negative_Noise) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    RightPanelNoiseDashedSpacing = (int) param_value;
+                LeftPanelNoiseDashedSpacing = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Noise_Dashed_Spacing;
+            }            
             
             LeftPanelShapeEllipseX *= LeftPanelShapeScale;
             LeftPanelShapeEllipseY *= LeftPanelShapeScale;
@@ -1057,6 +1128,20 @@ public class VizPanel extends JPanel
                 RightPanelBackgroundLifeTimeS = (int) param_value;
                 positive_value = Vizcacha2.reader.Positive_Background_Life_Time;
             }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Background_Dashed_Length_String+Vizcacha2.reader.Automaton_State_Negative_Background) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    LeftPanelBackgroundDashedLength = (int) param_value;
+                RightPanelBackgroundDashedLength = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Background_Dashed_Length;
+            }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Background_Dashed_Spacing_String+Vizcacha2.reader.Automaton_State_Negative_Noise) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    LeftPanelBackgroundDashedSpacing = (int) param_value;
+                RightPanelBackgroundDashedSpacing = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Background_Dashed_Spacing;
+            }             
             
             
             
@@ -1214,6 +1299,21 @@ public class VizPanel extends JPanel
                 RightPanelShapeLifeTimeS = (int) param_value;
                 positive_value = Vizcacha2.reader.Positive_Shape_Life_Time;
             }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Shape_Dashed_Length_String+Vizcacha2.reader.Automaton_State_Negative_Shape) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    LeftPanelShapeDashedLength = (int) param_value;
+                RightPanelShapeDashedLength = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Shape_Dashed_Length;
+            }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Shape_Dashed_Spacing_String+Vizcacha2.reader.Automaton_State_Negative_Shape) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    LeftPanelShapeDashedSpacing = (int) param_value;
+                RightPanelShapeDashedSpacing = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Shape_Dashed_Spacing;
+            }            
+            
             
             if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Noise_Coherence_String+Vizcacha2.reader.Automaton_State_Negative_Noise) )
             {
@@ -1279,6 +1379,21 @@ public class VizPanel extends JPanel
                 RightPanelNoiseLifeTimeS = (int) param_value;
                 positive_value = Vizcacha2.reader.Positive_Noise_Life_Time;
             }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Noise_Dashed_Length_String+Vizcacha2.reader.Automaton_State_Negative_Noise) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    LeftPanelNoiseDashedLength = (int) param_value;
+                RightPanelNoiseDashedLength = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Noise_Dashed_Length;
+            }
+            if ( Vizcacha2.reader.PARAM.equals(Vizcacha2.reader.Stimuli_Noise_Dashed_Spacing_String+Vizcacha2.reader.Automaton_State_Negative_Noise) )
+            {
+                if (Vizcacha2.reader.Change_In_Both==1)
+                    LeftPanelNoiseDashedSpacing = (int) param_value;
+                RightPanelNoiseDashedSpacing = (int) param_value;
+                positive_value = Vizcacha2.reader.Positive_Noise_Dashed_Spacing;
+            }            
+            
             
             RightPanelShapeEllipseX *= RightPanelShapeScale;
             RightPanelShapeEllipseY *= RightPanelShapeScale;
