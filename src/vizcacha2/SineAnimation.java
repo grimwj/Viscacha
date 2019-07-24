@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ConvolveOp;
@@ -83,20 +84,15 @@ public class SineAnimation extends VizPanel
         time_created_ms = System.nanoTime()/(1000*1000);
     }
     
-    public void SineAnimation_UpdateAndDraw(Graphics g, int translate_x, int translate_y)
+    public void SineAnimation_UpdateAndDrawLayer(Graphics g, int pos_x, int pos_y, int translate_x, int translate_y)
     {
-        //System.out.println("Grating update and draw...");
-        
         long current_time_ms = (System.nanoTime()/(1000*1000)) - time_created_ms;
-        //double phase = (speed*(current_time_ms/1000)/width)*images_number;
         
         double phase = (double) (speed) * current_time_ms / (1000*width);
         
         double tmp = (phase * width)%width ;
         
         int phs = (int) tmp;
-        
-        //System.out.println("\t\t\t\t\t\t\t phase: " + phase + " phs: " + tmp + " time: " + current_time_ms);
         
         // create the transform, note that the transformations happen
         // in reversed order (so check them backwards)
@@ -113,8 +109,42 @@ public class SineAnimation extends VizPanel
         
         int translate_img_x = -image_larger_dim/2 + phs;
         int translate_img_y = -image_larger_dim/2 + phs;
-//        int translate_img_x = -image_larger_dim/2;
-//        int translate_img_y = -image_larger_dim/2;
+        
+        at.translate(translate_img_x, translate_img_y);
+        
+        Rectangle2D.Double rect = new Rectangle2D.Double(pos_x,pos_y,image_width,image_height);
+        Area rectangle = new Area(rect);
+        
+        Graphics2D g2d = (Graphics2D) g;
+        g.setClip(rectangle);
+        g2d.drawImage(image, at, null);
+    }
+    
+    public void SineAnimation_UpdateAndDrawEllipse(Graphics g, int translate_x, int translate_y)
+    {
+        long current_time_ms = (System.nanoTime()/(1000*1000)) - time_created_ms;
+        
+        double phase = (double) (speed) * current_time_ms / (1000*width);
+        
+        double tmp = (phase * width)%width ;
+        
+        int phs = (int) tmp;
+        
+        // create the transform, note that the transformations happen
+        // in reversed order (so check them backwards)
+        AffineTransform at = new AffineTransform();
+
+        // 4. translate it to the center of the component
+        at.translate(translate_x, translate_y);
+        
+        // 3. do the actual rotation
+        at.rotate(Math.toRadians(angle));
+
+        // 1. translate the object so that you rotate it around the 
+        //    center (easier :))
+        
+        int translate_img_x = -image_larger_dim/2 + phs;
+        int translate_img_y = -image_larger_dim/2 + phs;
         
         at.translate(translate_img_x, translate_img_y);
         

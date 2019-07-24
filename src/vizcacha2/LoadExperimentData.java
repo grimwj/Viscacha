@@ -169,6 +169,12 @@ public class LoadExperimentData
     public int Negative_Background_Dot_Max_Count;
     public double Negative_Background_Life_Time;
     
+    public double Negative_Background_Medium_Value;
+    public double Negative_Background_Amplitude;
+    public int Negative_Background_Width;
+    public double Negative_Background_Duty;
+    public int Negative_Background_Mask;
+    
     //Negative stimuli shape
     public int Negative_Shape_Horizontal_Offset=-1;
     public double Negative_Shape_Field_Scale=1;
@@ -209,6 +215,12 @@ public class LoadExperimentData
     public int Negative_Noise_Dot_Max_Count;
     public double Negative_Noise_Life_Time;
     
+    public double Negative_Noise_Medium_Value;
+    public double Negative_Noise_Amplitude;
+    public int Negative_Noise_Width;
+    public double Negative_Noise_Duty;
+    public int Negative_Noise_Mask;
+    
     //positive stimuli background 
     public String Positive_Background_Type;
     public double Positive_Background_Speed;
@@ -222,6 +234,12 @@ public class LoadExperimentData
     public double Positive_Background_Dot_Color_Threshold=1;
     public int Positive_Background_Dot_Max_Count;
     public double Positive_Background_Life_Time;
+    
+    public double Positive_Background_Medium_Value;
+    public double Positive_Background_Amplitude;
+    public int Positive_Background_Width;
+    public double Positive_Background_Duty;
+    public int Positive_Background_Mask;
     
     //positive stimuli shape
     public int Positive_Shape_Horizontal_Offset=-1;
@@ -262,6 +280,12 @@ public class LoadExperimentData
     public double Positive_Noise_Dot_Color_Threshold=1;
     public int Positive_Noise_Dot_Max_Count;
     public double Positive_Noise_Life_Time;
+    
+    public double Positive_Noise_Medium_Value;
+    public double Positive_Noise_Amplitude;
+    public int Positive_Noise_Width;
+    public double Positive_Noise_Duty;
+    public int Positive_Noise_Mask;
     
     
     public LoadExperimentData(String filename)
@@ -624,11 +648,37 @@ public class LoadExperimentData
         {
             line = line.replace(Stimuli_Background_Life_Time_String+"=", "");
             Positive_Background_Life_Time = Double.parseDouble(line);
-        }        
+        }
+        if (line.contains(Stimuli_Shape_Medium_Value_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Medium_Value_String+"=", "");
+            Positive_Background_Medium_Value = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Amplitude_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Amplitude_String+"=", "");
+            Positive_Background_Amplitude = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Width_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Width_String+"=", "");
+            Positive_Background_Width = Integer.parseInt(line);
+        }
+        if (line.contains(Stimuli_Shape_Duty_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Duty_String+"=", "");
+            Positive_Background_Duty = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Mask_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Mask_String+"=", "");
+            Positive_Background_Mask = Integer.parseInt(line);
+        }
         if (line.contains("}"))
         {
             Automaton_State = Automaton_State_Positive;
         }
+       
     }
     private void Automaton_State_Positive_Shape_Routine(String line)
     {
@@ -817,7 +867,31 @@ public class LoadExperimentData
             line = line.replace(Stimuli_Noise_Life_Time_String+"=", "");
             Positive_Noise_Life_Time = Double.parseDouble(line);
         }
-        
+        if (line.contains(Stimuli_Shape_Medium_Value_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Medium_Value_String+"=", "");
+            Positive_Noise_Medium_Value = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Amplitude_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Amplitude_String+"=", "");
+            Positive_Noise_Amplitude = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Width_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Width_String+"=", "");
+            Positive_Noise_Width = Integer.parseInt(line);
+        }
+        if (line.contains(Stimuli_Shape_Duty_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Duty_String+"=", "");
+            Positive_Noise_Duty = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Mask_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Mask_String+"=", "");
+            Positive_Noise_Mask = Integer.parseInt(line);
+        }
         if (line.contains("}"))
         {
             Automaton_State = Automaton_State_Positive;
@@ -922,7 +996,48 @@ public class LoadExperimentData
                 PARAM = Stimuli_Background_Life_Time_String+Automaton_State_Negative_Background;
             else
                 Negative_Background_Life_Time = Double.parseDouble(line);
-        }   
+        }
+        
+        if (line.contains(Stimuli_Shape_Medium_Value_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Medium_Value_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Medium_Value_String+Automaton_State_Negative_Background;
+            else
+                Negative_Background_Medium_Value = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Amplitude_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Amplitude_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Amplitude_String+Automaton_State_Negative_Background;
+            else
+                Negative_Background_Amplitude = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Width_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Width_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Width_String+Automaton_State_Negative_Background;
+            else
+                Negative_Background_Width = Integer.parseInt(line);
+        }
+        if (line.contains(Stimuli_Shape_Duty_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Duty_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Duty_String+Automaton_State_Negative_Background;
+            else
+                Negative_Background_Duty = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Mask_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Mask_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Mask_String+Automaton_State_Negative_Background;
+            else
+                Negative_Background_Mask = Integer.parseInt(line);
+        }
         
         if (line.contains("}"))
         {
@@ -1230,6 +1345,46 @@ public class LoadExperimentData
                 Negative_Noise_Life_Time = Double.parseDouble(line);
         }
         
+        if (line.contains(Stimuli_Shape_Medium_Value_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Medium_Value_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Medium_Value_String+Automaton_State_Negative_Noise;
+            else
+                Negative_Noise_Medium_Value = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Amplitude_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Amplitude_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Amplitude_String+Automaton_State_Negative_Noise;
+            else
+                Negative_Noise_Amplitude = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Width_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Width_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Width_String+Automaton_State_Negative_Noise;
+            else
+                Negative_Noise_Width = Integer.parseInt(line);
+        }
+        if (line.contains(Stimuli_Shape_Duty_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Duty_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Duty_String+Automaton_State_Negative_Noise;
+            else
+                Negative_Noise_Duty = Double.parseDouble(line);
+        }
+        if (line.contains(Stimuli_Shape_Mask_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Mask_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Shape_Mask_String+Automaton_State_Negative_Noise;
+            else
+                Negative_Noise_Mask = Integer.parseInt(line);
+        }
         
         
         if (line.contains("}"))
