@@ -42,14 +42,16 @@ Positive
 	# bottom layer, underneath Shape & Noise
 	Background
 	{
-		Type=2
+		Type=3
 		Background_Color=0
 		Speed=20
 		Direction=45
 		Width=15
 		Amplitude=0.4
 		Medium_Value=0.5
-		Mask=1
+		Dashed_Length=30
+		Dashed_Spacing=15
+		Mask=2
 		Duty=0.5
 	}
 
@@ -60,12 +62,14 @@ Positive
 		Ellipse_X=100
 		Ellipse_Y=100
 
-		Type=2
+		Type=3
 		Speed=20
-		Direction=45
+		Direction=0
 		Width=15
 		Amplitude=0.4
 		Medium_Value=0.5
+		Dashed_Length=30
+		Dashed_Spacing=15
 		Mask=3
 		Duty=0.5
 	}
@@ -92,6 +96,8 @@ Negative
 	}
 	Shape
 	{
+		Ellipse_X=50
+		Ellipse_Y=200
 		Horizontal_Offset=110
 		Speed=20
 		Direction=PARAM

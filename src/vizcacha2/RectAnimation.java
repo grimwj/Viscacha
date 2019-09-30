@@ -31,8 +31,11 @@ public class RectAnimation extends VizPanel
     int image_height;
     int image_larger_dim;
     
+    int dashed_width=0;
+    int dashed_spacing=0;
     
-    public RectAnimation(int image_width, int image_height, double medium_value, double amplitude, int speed, int direction, int width, double duty, int mask)
+    
+    public RectAnimation(int image_width, int image_height, double medium_value, double amplitude, int speed, int direction, int width, double duty, int mask, int dashed_width, int dashed_spacing)
     {   
         scale_factor = (double) (width)/speed;
         
@@ -71,6 +74,8 @@ public class RectAnimation extends VizPanel
                 sign = -1;
 
             int grey_scale = (int) ((amplitude*sign + medium_value) * 255);
+            int grey_scale_min = (int) ((amplitude*-1 + medium_value) * 255);
+            int grey_scale_max = (int) ((amplitude*1 + medium_value) * 255);
 
             if (grey_scale>255)
                 grey_scale = 255;
@@ -79,11 +84,23 @@ public class RectAnimation extends VizPanel
 
             Color color = new Color(grey_scale, grey_scale, grey_scale);
             int color_intval = color.getRGB();
+            color = new Color(grey_scale_min, grey_scale_min, grey_scale_min);
+            int color_intval_min = color.getRGB();
+            color = new Color(grey_scale_max, grey_scale_max, grey_scale_max);
+            int color_intval_max = color.getRGB();
 
             for(int j = 0; j < image_larger_dim; j++)
             {
                 image.setRGB(i, j, color_intval);
-            }
+                // dashed
+                if (dashed_width>0 && dashed_spacing>0)
+                {
+                    int dashed_period = dashed_width + dashed_spacing;
+
+                    if (j%dashed_period >= dashed_width)
+                        image.setRGB(i, j, color_intval_max);
+                }
+            }           
         }
         
         BufferedImageOp op = new ConvolveOp( new Kernel(mask, mask, matrix) );
