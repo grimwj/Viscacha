@@ -14,6 +14,9 @@ public class LoadExperimentData
     public String PARAM="";
     public int AutomatonPARAM;
     
+    public static final String Fixation_Colors_Cross_String = "Fixation_Colors_Cross";
+    public static final String Fixation_Colors_Background_String = "Fixation_Colors_Background";
+    
     public static final String Experiment_Type_Constant_String = "Constant";
     public static final String Experiment_Type_Staircase_String = "Staircase";
     public String Experiment_Type;
@@ -35,7 +38,29 @@ public class LoadExperimentData
     public static final String Stimuli_Shape_String = "Shape";
     public static final String Stimuli_Noise_String = "Noise";
     
-    //stimuli background 
+        //staircase definition
+    public static final String Staircase_Definition_Easiest_String = "Easiest";
+    public static final String Staircase_Definition_Hardest_String = "Hardest";
+    public static final String Staircase_Definition_Start_String = "Start";
+    public static final String Staircase_Definition_Max_Reversals_String = "Max_Reversals";
+    public static final String Staircase_Definition_Factor_String = "Factor";
+    public static final String Staircase_Definition_Min_Reversals_String = "Min_Reversals";
+    public static final String Staircase_Definition_Max_Trials_String = "Max_Trials";
+    
+    //constant definition
+    public static final String Constant_Definition_Level_String = "Level";
+    public static final String Constant_Definition_Repeat_String = "Repeat";
+    public static final String Constant_Definition_Max_Trials_String = "Max_Trials";
+    
+    //trial times
+    public static final String Trial_Times_Initial_Delay_String = "Initial_Delay";
+    public static final String Trial_Times_Initial_Screen_Change_Delay_String = "Screen_Change_Delay";
+    public static final String Trial_Times_Initial_Max_Answer_Time_String = "Max_Answer_Time";
+    public static final String Trial_Times_Initial_Delay_After_Positive_String = "Delay_After_Positive";
+    public static final String Trial_Times_Initial_Threshold_Calc_Delay_String = "Threshold_Calc_Delay";
+    
+    //stimuli background
+    public static final String Stimuli_Background_Image_String = "Image";
     public static final String Stimuli_Background_Type_String = "Type";
     public static final String Stimuli_Background_Speed_String = "Speed";
     public static final String Stimuli_Background_Direction_String = "Direction";
@@ -57,8 +82,8 @@ public class LoadExperimentData
     public static final String Stimuli_Background_Dashed_Spacing_String = "Dashed_Spacing";
     
     //stimuli shape
+    public static final String Stimuli_Shape_Image_String = "Image";
     public static final String Stimuli_Shape_Background_Color_String = "Background_Color";
-    
     public static final String Stimuli_Shape_Horizontal_Offset_String = "Horizontal_Offset";
     public static final String Stimuli_Shape_Field_Scale_String = "Field_Scale";
     public static final String Stimuli_Shape_Scale_String = "Scale";
@@ -105,27 +130,6 @@ public class LoadExperimentData
     public static final String Stimuli_Noise_Mask_String = "Mask";
     public static final String Stimuli_Noise_Dashed_Length_String = "Dashed_Length";
     public static final String Stimuli_Noise_Dashed_Spacing_String = "Dashed_Spacing";
-
-    //staircase definition
-    public static final String Staircase_Definition_Easiest_String = "Easiest";
-    public static final String Staircase_Definition_Hardest_String = "Hardest";
-    public static final String Staircase_Definition_Start_String = "Start";
-    public static final String Staircase_Definition_Max_Reversals_String = "Max_Reversals";
-    public static final String Staircase_Definition_Factor_String = "Factor";
-    public static final String Staircase_Definition_Min_Reversals_String = "Min_Reversals";
-    public static final String Staircase_Definition_Max_Trials_String = "Max_Trials";
-    
-    //constant definition
-    public static final String Constant_Definition_Level_String = "Level";
-    public static final String Constant_Definition_Repeat_String = "Repeat";
-    public static final String Constant_Definition_Max_Trials_String = "Max_Trials";
-    
-    //trial times
-    public static final String Trial_Times_Initial_Delay_String = "Initial_Delay";
-    public static final String Trial_Times_Initial_Screen_Change_Delay_String = "Screen_Change_Delay";
-    public static final String Trial_Times_Initial_Max_Answer_Time_String = "Max_Answer_Time";
-    public static final String Trial_Times_Initial_Delay_After_Positive_String = "Delay_After_Positive";
-    public static final String Trial_Times_Initial_Threshold_Calc_Delay_String = "Threshold_Calc_Delay";
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -144,6 +148,9 @@ public class LoadExperimentData
     private static final int Automaton_State_Trial = 5;
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    public int[] Fixation_Colors_Cross = {0, 0, 0};
+    public int[] Fixation_Colors_Background = {255, 255, 255};
     
     public int Background = 0;
     public int Experiment_Repeat = 1;
@@ -172,79 +179,82 @@ public class LoadExperimentData
     public int Change_In_Both=0;
     
     //Negative stimuli background 
+    public String Negative_Background_Image;
     public String Negative_Background_Type;
-    public double Negative_Background_Speed;
-    public double Negative_Background_Direction;
-    public double Negative_Background_Coherence;
-    public double Negative_Background_Speed_X;
-    public double Negative_Background_Speed_Y;
-    public int Negative_Background_Dot_Size;
-    public int Negative_Background_Dot_Color;
-    public int Negative_Background_Dot_Color_2;
-    public double Negative_Background_Dot_Color_Threshold=1;
-    public int Negative_Background_Dot_Max_Count;
-    public double Negative_Background_Life_Time;
+    public double Negative_Background_Speed=-1;
+    public double Negative_Background_Direction=-1;
+    public double Negative_Background_Coherence=-1;
+    public double Negative_Background_Speed_X=-1;
+    public double Negative_Background_Speed_Y=-1;
+    public int Negative_Background_Dot_Size=-1;
+    public int Negative_Background_Dot_Color=-1;
+    public int Negative_Background_Dot_Color_2=-1;
+    public double Negative_Background_Dot_Color_Threshold=-1;
+    public int Negative_Background_Dot_Max_Count=-1;
+    public double Negative_Background_Life_Time=-1;
     
-    public double Negative_Background_Medium_Value;
-    public double Negative_Background_Amplitude;
-    public int Negative_Background_Width;
-    public double Negative_Background_Duty;
-    public int Negative_Background_Mask;
-    public int Negative_Background_Dashed_Length;
-    public int Negative_Background_Dashed_Spacing;
+    public double Negative_Background_Medium_Value=-1;
+    public double Negative_Background_Amplitude=-1;
+    public int Negative_Background_Width=-1;
+    public double Negative_Background_Duty=-1;
+    public int Negative_Background_Mask=-1;
+    public int Negative_Background_Dashed_Length=-1;
+    public int Negative_Background_Dashed_Spacing=-1;
     
     
     //Negative stimuli shape
+    public String Negative_Shape_Image;
     public int Negative_Shape_Horizontal_Offset=-1;
-    public double Negative_Shape_Field_Scale=1;
-    public double Negative_Shape_Scale=1;
-    public int Negative_Shape_Background_Color;
-    public int Negative_Shape_Ellipse_X=0;
-    public int Negative_Shape_Ellipse_Y=0;
+    public double Negative_Shape_Field_Scale=-1;
+    public double Negative_Shape_Scale=-1;
+    public int Negative_Shape_Background_Color=-1;
+    public int Negative_Shape_Ellipse_X=-1;
+    public int Negative_Shape_Ellipse_Y=-1;
     public String Negative_Shape_Type;
-    public double Negative_Shape_Medium_Value;
-    public double Negative_Shape_Amplitude;
-    public int Negative_Shape_Speed;
-    public int Negative_Shape_Direction=0;
-    public int Negative_Shape_Width=0;
-    public double Negative_Shape_Duty=0;
-    public int Negative_Shape_Mask;
-    public double Negative_Shape_Coherence;
-    public double Negative_Shape_Speed_X;
-    public double Negative_Shape_Speed_Y;
-    public int Negative_Shape_Dot_Size;
-    public int Negative_Shape_Dot_Color;
-    public int Negative_Shape_Dot_Color_2;
-    public double Negative_Shape_Dot_Color_Threshold=1;
-    public int Negative_Shape_Dot_Max_Count;
-    public double Negative_Shape_Life_Time;
-    public int Negative_Shape_Dashed_Length;
-    public int Negative_Shape_Dashed_Spacing;
+    public double Negative_Shape_Medium_Value=-1;
+    public double Negative_Shape_Amplitude=-1;
+    public int Negative_Shape_Speed=-1;
+    public int Negative_Shape_Direction=-1;
+    public int Negative_Shape_Width=-1;
+    public double Negative_Shape_Duty=-1;
+    public int Negative_Shape_Mask=-1;
+    public double Negative_Shape_Coherence=-1;
+    public double Negative_Shape_Speed_X=-1;
+    public double Negative_Shape_Speed_Y=-1;
+    public int Negative_Shape_Dot_Size=-1;
+    public int Negative_Shape_Dot_Color=-1;
+    public int Negative_Shape_Dot_Color_2=-1;
+    public double Negative_Shape_Dot_Color_Threshold=-1;
+    public int Negative_Shape_Dot_Max_Count=-1;
+    public double Negative_Shape_Life_Time=-1;
+    public int Negative_Shape_Dashed_Length=-1;
+    public int Negative_Shape_Dashed_Spacing=-1;
     
     
     //Negative stimuli noise
     public String Negative_Noise_Type;
-    public double Negative_Noise_Speed;
-    public double Negative_Noise_Direction;
-    public double Negative_Noise_Coherence;
-    public double Negative_Noise_Speed_X;
-    public double Negative_Noise_Speed_Y;
-    public int Negative_Noise_Dot_Size;
-    public int Negative_Noise_Dot_Color;
-    public int Negative_Noise_Dot_Color_2;
-    public double Negative_Noise_Dot_Color_Threshold=1;
-    public int Negative_Noise_Dot_Max_Count;
-    public double Negative_Noise_Life_Time;
+    public double Negative_Noise_Speed=-1;
+    public double Negative_Noise_Direction=-1;
+    public double Negative_Noise_Coherence=-1;
+    public double Negative_Noise_Speed_X=-1;
+    public double Negative_Noise_Speed_Y=-1;
+    public int Negative_Noise_Dot_Size=-1;
+    public int Negative_Noise_Dot_Color=-1;
+    public int Negative_Noise_Dot_Color_2=-1;
+    public double Negative_Noise_Dot_Color_Threshold=-1;
+    public int Negative_Noise_Dot_Max_Count=-1;
+    public double Negative_Noise_Life_Time=-1;
     
-    public double Negative_Noise_Medium_Value;
-    public double Negative_Noise_Amplitude;
-    public int Negative_Noise_Width;
-    public double Negative_Noise_Duty;
-    public int Negative_Noise_Mask;
-    public int Negative_Noise_Dashed_Length;
-    public int Negative_Noise_Dashed_Spacing;
+    public double Negative_Noise_Medium_Value=-1;
+    public double Negative_Noise_Amplitude=-1;
+    public int Negative_Noise_Width=-1;
+    public double Negative_Noise_Duty=-1;
+    public int Negative_Noise_Mask=-1;
+    public int Negative_Noise_Dashed_Length=-1;
+    public int Negative_Noise_Dashed_Spacing=-1;
     
     //positive stimuli background 
+    public String Positive_Background_Image;
     public String Positive_Background_Type;
     public double Positive_Background_Speed;
     public double Positive_Background_Direction;
@@ -267,7 +277,8 @@ public class LoadExperimentData
     public int Positive_Background_Dashed_Spacing;
     
     //positive stimuli shape
-    public int Positive_Shape_Horizontal_Offset=-1;
+    public String Positive_Shape_Image;
+    public int Positive_Shape_Horizontal_Offset=0;
     public double Positive_Shape_Field_Scale;
     public double Positive_Shape_Scale;
     public int Positive_Shape_Background_Color;
@@ -295,6 +306,7 @@ public class LoadExperimentData
     
     
     //positive stimuli noise
+    public String Positive_Noise_Image;
     public String Positive_Noise_Type;
     public double Positive_Noise_Speed;
     public double Positive_Noise_Direction;
@@ -415,6 +427,28 @@ public class LoadExperimentData
     
     private void Automaton_State_Default_Routine(String line)
     {
+        if (line.contains(Fixation_Colors_Cross_String+"="))
+        {
+            line = line.replace(Fixation_Colors_Cross_String+"=", "");
+            
+            String [] str = line.split(",");
+            
+            for (int i=0;i<3;i++)
+            {
+                Fixation_Colors_Cross[i] = Integer.parseInt(str[i]);
+            }
+        }
+        if (line.contains(Fixation_Colors_Background_String+"="))
+        {
+            line = line.replace(Fixation_Colors_Background_String+"=", "");
+            
+            String [] str = line.split(",");
+            
+            for (int i=0;i<3;i++)
+            {
+                Fixation_Colors_Background[i] = Integer.parseInt(str[i]);
+            }
+        }        
         if (line.contains(Background_String+"="))
         {
             line = line.replace(Background_String+"=", "");
@@ -618,6 +652,11 @@ public class LoadExperimentData
     
     private void Automaton_State_Positive_Background_Routine(String line)
     {
+        if (line.contains(Stimuli_Background_Image_String+"="))
+        {
+            line = line.replace(Stimuli_Background_Image_String+"=", "");
+            Positive_Background_Image = line;
+        }
         if (line.contains(Stimuli_Background_Type_String+"="))
         {
             line = line.replace(Stimuli_Background_Type_String+"=", "");
@@ -721,6 +760,11 @@ public class LoadExperimentData
     
     private void Automaton_State_Positive_Shape_Routine(String line)
     {
+        if (line.contains(Stimuli_Shape_Image_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Image_String+"=", "");
+            Positive_Shape_Image = line;
+        }
         if (line.contains(Stimuli_Shape_Horizontal_Offset_String+"="))
         {
             line = line.replace(Stimuli_Shape_Horizontal_Offset_String+"=", "");
@@ -961,6 +1005,11 @@ public class LoadExperimentData
     
     private void Automaton_State_Negative_Background_Routine(String line)
     {
+        if (line.contains(Stimuli_Background_Image_String+"="))
+        {
+            line = line.replace(Stimuli_Background_Image_String+"=", "");
+            Negative_Background_Image = line;
+        }        
         if (line.contains(Stimuli_Background_Type_String+"="))
         {
             line = line.replace(Stimuli_Background_Type_String+"=", "");
@@ -1125,6 +1174,11 @@ public class LoadExperimentData
     
     private void Automaton_State_Negative_Shape_Routine(String line)
     {
+        if (line.contains(Stimuli_Shape_Image_String+"="))
+        {
+            line = line.replace(Stimuli_Shape_Image_String+"=", "");
+            Negative_Shape_Image = line;
+        } 
         if (line.contains(Stimuli_Shape_Horizontal_Offset_String+"="))
         {
             line = line.replace(Stimuli_Shape_Horizontal_Offset_String+"=", "");

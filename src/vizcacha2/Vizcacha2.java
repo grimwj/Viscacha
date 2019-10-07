@@ -18,9 +18,12 @@ public class Vizcacha2
     
     public static SerialComm serialComm;
     
+    public static EyeTrackerComm trackerComm;
+    
     public static void main(String[] args) 
     {
         serialComm = null;
+        trackerComm = new EyeTrackerComm();
         
         logger = new MyLogger();
         logger.MyLogger_WriteLine("Logger begins");

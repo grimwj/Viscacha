@@ -14,7 +14,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoadConfig 
-{   
+{
+    public static final String KEY_EXIT_String = "KEY_EXIT=";
+    public int KEY_EXIT;
+    
+    public static final String KEY_LEFT_String = "KEY_LEFT=";
+    public int KEY_LEFT;
+    
+    public static final String KEY_RIGHT_String = "KEY_RIGHT=";
+    public int KEY_RIGHT;
+    
+    public static final String KEY_STIMULI_String = "KEY_STIMULI=";
+    public int KEY_STIMULI;
+    
+    public static final String KEY_REMARK_String = "KEY_REMARK=";
+    public int KEY_REMARK;
+    
+    public static final String KEY_FEEDER_String = "KEY_FEEDER=";
+    public int KEY_FEEDER;
+    
+    public static final String KEY_START_String = "KEY_START=";
+    public int KEY_START;
+    
     public static final String Filename_String = "filename=";
     public String filename="";
     public String filename_no_ext="";
@@ -48,6 +69,12 @@ public class LoadConfig
     
     public static final String FeederTimer_String = "feeding_time_ms=";
     public int feeding_time;
+    
+    public static final String UseEyeTracker_String = "use_eyetracker=";
+    public int use_eyetracker=0;
+    
+    public static final String OverwriteLevel_String = "overwrite_level=";
+    public double[] overwrite_level;
     
     private int filename_flag = 0;
     private int sweep_flag = 0;
@@ -125,6 +152,8 @@ public class LoadConfig
     
     private void Automaton_reader(String line)
     {
+        ReadKeyboardCodes(line);
+        
         if (line.contains(Filename_String))
         {
             line = line.replace(Filename_String, "");
@@ -185,9 +214,74 @@ public class LoadConfig
             line = line.replace(FeederTimer_String, "");
             feeding_time = Integer.parseInt(line);
         }
+        if (line.contains(UseEyeTracker_String))
+        {
+            line = line.replace(UseEyeTracker_String, "");
+            use_eyetracker = Integer.parseInt(line);
+        }
+        if (line.contains(OverwriteLevel_String))
+        {
+            line = line.replace(OverwriteLevel_String, "");
+            
+            String [] str = line.split(",");
+            
+            overwrite_level = new double[str.length];
+            
+            for (int i=0;i<str.length;i++)
+            {
+                overwrite_level[i] = Double.parseDouble(str[i]);
+            }
+        }
         
     }
     
+    private void ReadKeyboardCodes(String line)
+    {
+        if (line.contains(KEY_EXIT_String))
+        {
+            line = line.replace(KEY_EXIT_String, "");
+            KEY_EXIT = Integer.parseInt(line);
+            Keyboard_inputs.KEYBOARD_ESC = KEY_EXIT;
+        }
+        if (line.contains(KEY_LEFT_String))
+        {
+            line = line.replace(KEY_LEFT_String, "");
+            KEY_LEFT = Integer.parseInt(line);
+            Keyboard_inputs.KEYBOARD_LEFT = KEY_LEFT;
+        }
+        if (line.contains(KEY_RIGHT_String))
+        {
+            line = line.replace(KEY_RIGHT_String, "");
+            KEY_RIGHT = Integer.parseInt(line);
+            Keyboard_inputs.KEYBOARD_RIGHT = KEY_RIGHT;
+        }
+        if (line.contains(KEY_STIMULI_String))
+        {
+            line = line.replace(KEY_STIMULI_String, "");
+            KEY_STIMULI = Integer.parseInt(line);
+            Keyboard_inputs.KEYBOARD_ALT = KEY_STIMULI;
+        }
+        if (line.contains(KEY_REMARK_String))
+        {
+            line = line.replace(KEY_REMARK_String, "");
+            KEY_REMARK = Integer.parseInt(line);
+            Keyboard_inputs.KEYBOARD_SPACE = KEY_REMARK;
+        }
+        if (line.contains(KEY_FEEDER_String))
+        {
+            line = line.replace(KEY_FEEDER_String, "");
+            KEY_FEEDER = Integer.parseInt(line);
+            Keyboard_inputs.KEYBOARD_T = KEY_FEEDER;
+        }
+        if (line.contains(KEY_START_String))
+        {
+            line = line.replace(KEY_START_String, "");
+            KEY_START = Integer.parseInt(line);
+            Keyboard_inputs.KEYBOARD_S = KEY_START;
+        }
+        
+    }
+
     private void PassLine_reader(String line)
     {
         PrintNewConfig(line);

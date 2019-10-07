@@ -8,9 +8,14 @@ import java.awt.Toolkit;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class VizPanel extends JPanel 
@@ -40,6 +45,16 @@ public class VizPanel extends JPanel
     String RightPanelShapeType="0";
     String LeftPanelNoiseType="0";
     String RightPanelNoiseType="0";
+    
+    String LeftPanelBackgroundImage="";
+    String RightPanelBackgroundImage="";
+    String LeftPanelShapeImage="";
+    String RightPanelShapeImage="";
+    
+    BufferedImage LeftBackgroundImage;
+    BufferedImage RightBackgroundImage;
+    BufferedImage LeftShapeImage;
+    BufferedImage RightShapeImage;
     
     int LeftPanelBackgroundColor;
     int RightPanelBackgroundColor;
@@ -485,6 +500,8 @@ public class VizPanel extends JPanel
     {
         if (side.equals("left"))
         {
+            LeftPanelBackgroundImage = Vizcacha2.reader.Positive_Background_Image;
+            RightBackgroundImage = null;
             LeftPanelBackgroundColor = Vizcacha2.reader.Background;
             LeftPanelBackgroundType = Vizcacha2.reader.Positive_Background_Type;
               
@@ -508,6 +525,8 @@ public class VizPanel extends JPanel
             LeftPanelBackgroundDashedLength = Vizcacha2.reader.Positive_Background_Dashed_Length;
             LeftPanelBackgroundDashedSpacing = Vizcacha2.reader.Positive_Background_Dashed_Spacing;            
             
+            LeftPanelShapeImage = Vizcacha2.reader.Positive_Shape_Image;
+            LeftShapeImage = null;
             LeftPanelShapeBackgroundColor = Vizcacha2.reader.Positive_Shape_Background_Color;
             
             LeftPanelShapeType = Vizcacha2.reader.Positive_Shape_Type;
@@ -560,6 +579,8 @@ public class VizPanel extends JPanel
         }
         if (side.equals("right"))
         {
+            RightPanelBackgroundImage = Vizcacha2.reader.Positive_Background_Image;
+            RightBackgroundImage = null;
             RightPanelBackgroundColor = Vizcacha2.reader.Background;
             RightPanelBackgroundType = Vizcacha2.reader.Positive_Background_Type;
              
@@ -583,6 +604,8 @@ public class VizPanel extends JPanel
             RightPanelBackgroundDashedLength = Vizcacha2.reader.Positive_Background_Dashed_Length;
             RightPanelBackgroundDashedSpacing = Vizcacha2.reader.Positive_Background_Dashed_Spacing;
             
+            RightPanelShapeImage = Vizcacha2.reader.Positive_Shape_Image;
+            RightShapeImage = null;
             RightPanelShapeBackgroundColor = Vizcacha2.reader.Positive_Shape_Background_Color;
             
             RightPanelShapeType = Vizcacha2.reader.Positive_Shape_Type;
@@ -649,20 +672,32 @@ public class VizPanel extends JPanel
         {
             PaintComponent_PreparePositive("left");
             
-            LeftPanelBackgroundDirection = (int) Vizcacha2.reader.Negative_Background_Direction;
-            LeftPanelShapeDirection = Vizcacha2.reader.Negative_Shape_Direction;
-            LeftPanelNoiseDirection = (int) Vizcacha2.reader.Negative_Noise_Direction;
+            if (Vizcacha2.reader.Negative_Background_Image != null)
+                LeftPanelBackgroundImage = Vizcacha2.reader.Negative_Background_Image;
+            if (Vizcacha2.reader.Negative_Shape_Image != null)
+                LeftPanelShapeImage = Vizcacha2.reader.Negative_Shape_Image;
             
-            LeftPanelShapeHorizontalOffset = Vizcacha2.reader.Negative_Shape_Horizontal_Offset;
+            if (Vizcacha2.reader.Negative_Background_Direction != -1)
+                LeftPanelBackgroundDirection = (int) Vizcacha2.reader.Negative_Background_Direction;
+            if (Vizcacha2.reader.Negative_Shape_Direction != -1)
+                LeftPanelShapeDirection = Vizcacha2.reader.Negative_Shape_Direction;
+            if (Vizcacha2.reader.Negative_Noise_Direction != -1)
+                LeftPanelNoiseDirection = (int) Vizcacha2.reader.Negative_Noise_Direction;
             
-            LeftPanelShapeScale = Vizcacha2.reader.Negative_Shape_Scale;
-            LeftPanelShapeFieldScale = Vizcacha2.reader.Negative_Shape_Field_Scale;
+            if (Vizcacha2.reader.Negative_Shape_Horizontal_Offset != -1)
+                LeftPanelShapeHorizontalOffset = Vizcacha2.reader.Negative_Shape_Horizontal_Offset;
             
-            LeftPanelShapeSpeed = Vizcacha2.reader.Negative_Shape_Speed;
+            if (Vizcacha2.reader.Negative_Shape_Scale != -1)
+                LeftPanelShapeScale = Vizcacha2.reader.Negative_Shape_Scale;
+            if (Vizcacha2.reader.Negative_Shape_Field_Scale != -1)
+                LeftPanelShapeFieldScale = Vizcacha2.reader.Negative_Shape_Field_Scale;
             
-            if (Vizcacha2.reader.Negative_Shape_Ellipse_X!=0)
+            if (Vizcacha2.reader.Negative_Shape_Speed != -1)
+                LeftPanelShapeSpeed = Vizcacha2.reader.Negative_Shape_Speed;
+            
+            if (Vizcacha2.reader.Negative_Shape_Ellipse_X!=-1)
                 LeftPanelShapeEllipseX = Vizcacha2.reader.Negative_Shape_Ellipse_X;
-            if (Vizcacha2.reader.Negative_Shape_Ellipse_Y!=0)
+            if (Vizcacha2.reader.Negative_Shape_Ellipse_Y!=-1)
                 LeftPanelShapeEllipseY = Vizcacha2.reader.Negative_Shape_Ellipse_Y;
             // dla gratingow
             if ("2".equals(LeftPanelShapeType))
@@ -1025,20 +1060,32 @@ public class VizPanel extends JPanel
         {
             PaintComponent_PreparePositive("right");
             
-            RightPanelBackgroundDirection = (int) Vizcacha2.reader.Negative_Background_Direction;
-            RightPanelShapeDirection = Vizcacha2.reader.Negative_Shape_Direction;
-            RightPanelNoiseDirection = (int) Vizcacha2.reader.Negative_Noise_Direction;
+            if (Vizcacha2.reader.Negative_Background_Image != null)
+                RightPanelBackgroundImage = Vizcacha2.reader.Negative_Background_Image;
+            if (Vizcacha2.reader.Negative_Shape_Image != null)
+                RightPanelShapeImage = Vizcacha2.reader.Negative_Shape_Image;
             
-            RightPanelShapeHorizontalOffset = Vizcacha2.reader.Negative_Shape_Horizontal_Offset;
+            if (Vizcacha2.reader.Negative_Background_Direction != -1)
+                RightPanelBackgroundDirection = (int) Vizcacha2.reader.Negative_Background_Direction;
+            if (Vizcacha2.reader.Negative_Shape_Direction != -1)
+                RightPanelShapeDirection = Vizcacha2.reader.Negative_Shape_Direction;
+            if (Vizcacha2.reader.Negative_Noise_Direction != -1)
+                RightPanelNoiseDirection = (int) Vizcacha2.reader.Negative_Noise_Direction;
             
-            RightPanelShapeScale = Vizcacha2.reader.Negative_Shape_Scale;
-            RightPanelShapeFieldScale = Vizcacha2.reader.Negative_Shape_Field_Scale;
+            if (Vizcacha2.reader.Negative_Shape_Horizontal_Offset != -1)
+                RightPanelShapeHorizontalOffset = Vizcacha2.reader.Negative_Shape_Horizontal_Offset;
             
-            RightPanelShapeSpeed = Vizcacha2.reader.Negative_Shape_Speed;
+            if (Vizcacha2.reader.Negative_Shape_Scale != -1)
+                RightPanelShapeScale = Vizcacha2.reader.Negative_Shape_Scale;
+            if (Vizcacha2.reader.Negative_Shape_Field_Scale != -1)
+                RightPanelShapeFieldScale = Vizcacha2.reader.Negative_Shape_Field_Scale;
             
-            if (Vizcacha2.reader.Negative_Shape_Ellipse_X!=0)
+            if (Vizcacha2.reader.Negative_Shape_Speed != -1)
+                RightPanelShapeSpeed = Vizcacha2.reader.Negative_Shape_Speed;
+            
+            if (Vizcacha2.reader.Negative_Shape_Ellipse_X!=-1)
                 RightPanelShapeEllipseX = Vizcacha2.reader.Negative_Shape_Ellipse_X;
-            if (Vizcacha2.reader.Negative_Shape_Ellipse_Y!=0)
+            if (Vizcacha2.reader.Negative_Shape_Ellipse_Y!=-1)
                 RightPanelShapeEllipseY = Vizcacha2.reader.Negative_Shape_Ellipse_Y;
             // dla gratingow
             if ("2".equals(RightPanelShapeType))
@@ -1436,6 +1483,16 @@ public class VizPanel extends JPanel
             Area rect_clip = new Area(rect1);
             g.setClip(rect_clip);
             
+            if (LeftPanelBackgroundImage != null && !LeftPanelBackgroundImage.isEmpty())
+            {
+                try
+                {
+                    LeftBackgroundImage = ImageIO.read(new File(LeftPanelBackgroundImage));
+                    g.drawImage(LeftBackgroundImage, x0, y0, this);
+                }
+                catch (Exception e) {}
+            }
+            
             LeftBackgroundDots.Dots_Update();
             LeftBackgroundDots.Dots_SynchroUpdate();
             LeftBackgroundDots.Dots_Draw(g); 
@@ -1456,20 +1513,20 @@ public class VizPanel extends JPanel
     }
     
     private void PaintComponent_LeftSideShape(Graphics g)
-    {        
+    {
+        int x0 = 0;
+        int y0 = 0;
+        int x1 = screen_width/2;
+        int y1 = screen_height;
+        int w = screen_width/2;
+        int h = screen_height;
+        
         if(LeftPanelShapeType.equals("0"))
         {
             
         }
         else if(LeftPanelShapeType.equals("1"))
-        {
-            int x0 = 0;
-            int y0 = 0;
-            int x1 = screen_width/2;
-            int y1 = screen_height;
-            int w = screen_width/2;
-            int h = screen_height;
-            
+        {            
             //int ellipse_xloc = x0 + ((x1-x0)-LeftPanelShapeEllipseX)/2;
             int ellipse_xloc = x1 - LeftPanelShapeHorizontalOffset - LeftPanelShapeEllipseX/2;
             int ellipse_yloc = y0 + ((y1-y0)-LeftPanelShapeEllipseY)/2;
@@ -1482,6 +1539,17 @@ public class VizPanel extends JPanel
             
             g.setColor(color);
             g.fillRect(x0, y0, w, h);
+            
+            if (LeftPanelShapeImage != null && !LeftPanelShapeImage.isEmpty())
+            {
+                try
+                {
+                    LeftShapeImage = ImageIO.read(new File(LeftPanelShapeImage));
+                    g.drawImage(LeftShapeImage, x0, y0, this);
+
+                }
+                catch (Exception e) {}
+            }
             
             LeftShapeDots.Dots_Update();
             LeftShapeDots.Dots_SynchroUpdate();
@@ -1561,6 +1629,17 @@ public class VizPanel extends JPanel
             Area rect_clip = new Area(rect1);
             g.setClip(rect_clip);
             
+            if (RightPanelBackgroundImage != null && !RightPanelBackgroundImage.isEmpty())
+            {
+                try
+                {
+                    RightBackgroundImage = ImageIO.read(new File(RightPanelBackgroundImage));
+                    g.drawImage(RightBackgroundImage, x0, y0, this);
+
+                }
+                catch (Exception e) {}
+            }
+            
             RightBackgroundDots.Dots_Update();
             RightBackgroundDots.Dots_SynchroUpdate();
             RightBackgroundDots.Dots_Draw(g); 
@@ -1581,20 +1660,20 @@ public class VizPanel extends JPanel
     }
 
     private void PaintComponent_RightSideShape(Graphics g)
-    {        
+    {
+        int x0 = screen_width/2;
+        int y0 = 0;
+        int x1 = screen_width;
+        int y1 = screen_height;
+        int w = screen_width/2;
+        int h = screen_height;
+        
         if(RightPanelShapeType.equals("0"))
         {
             
         }
         else if(RightPanelShapeType.equals("1"))
         {
-            int x0 = screen_width/2;
-            int y0 = 0;
-            int x1 = screen_width;
-            int y1 = screen_height;
-            int w = screen_width/2;
-            int h = screen_height;
-
             //int ellipse_xloc = x0 + ((x1-x0)-RightPanelShapeEllipseX)/2;
             int ellipse_xloc = x0 + RightPanelShapeHorizontalOffset - RightPanelShapeEllipseX/2;
             int ellipse_yloc = y0 + ((y1-y0)-RightPanelShapeEllipseY)/2;
@@ -1608,6 +1687,16 @@ public class VizPanel extends JPanel
             g.setColor(color);
             g.fillRect(x0, y0, w, h);
             
+            if (RightPanelShapeImage != null && !RightPanelShapeImage.isEmpty())
+            {
+                try
+                {
+                    RightShapeImage = ImageIO.read(new File(RightPanelShapeImage));
+                    g.drawImage(RightShapeImage, x0, y0, this);
+                }
+                catch (Exception e) {}
+            }
+
             //System.out.println("Drawing left background type 1");
             RightShapeDots.Dots_Update();
             RightShapeDots.Dots_SynchroUpdate();
@@ -1701,8 +1790,15 @@ public class VizPanel extends JPanel
     {
         if (Vizcacha2.config_reader.focus_point!=0)
         {
-            Color color1 = new Color(255, 255, 255);
-            Color color2 = new Color(0, 0, 0);
+            int b1 = Vizcacha2.reader.Fixation_Colors_Background[0];
+            int b2 = Vizcacha2.reader.Fixation_Colors_Background[1];
+            int b3 = Vizcacha2.reader.Fixation_Colors_Background[2];
+            int c1 = Vizcacha2.reader.Fixation_Colors_Cross[0];
+            int c2 = Vizcacha2.reader.Fixation_Colors_Cross[1];
+            int c3 = Vizcacha2.reader.Fixation_Colors_Cross[2];
+            
+            Color color1 = new Color(b1, b2, b3);
+            Color color2 = new Color(c1, c2, c3);
 
             int o2_diameter = Vizcacha2.config_reader.focus_point_diameter;
 

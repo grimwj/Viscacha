@@ -1,0 +1,14 @@
+#
+#
+patient_name=TestPatient
+focus_point=1
+focus_point_diameter=20
+resolution_v=1080
+resolution_h=1920
+diagonal_inch=27
+feeding_time_ms=75
+#full_angle_v=10
+full_angle_h=55.3
+use_eyetracker=1
+sweep_files=0
+filename=example7.txt

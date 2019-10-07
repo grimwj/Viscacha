@@ -4,8 +4,8 @@
 # plik testowy dla ksztaltow, wariant FieldScale
 # zmienia sie skala, ok 0.2 (easy) do 1 (hard)
 
-Background=0
-Experiment_Repeat=2
+Background=255
+Experiment_Repeat=1
 
 #Experiment_Type=Constant
 #Constant_Definition 
@@ -18,9 +18,9 @@ Experiment_Repeat=2
 Experiment_Type=Staircase
 Staircase_Definition 
 {
-    Easiest=0
-    Hardest=45
-    Start=10
+    Easiest=0.5
+    Hardest=1
+    Start=0.51
     Max_Reversals=4
     Factor=0.1
     Min_Reversals=4
@@ -42,36 +42,43 @@ Positive
 	# bottom layer, underneath Shape & Noise
 	Background
 	{
-		Type=3
-		Background_Color=0
-		Speed=20
-		Direction=45
-		Width=15
-		Amplitude=0.4
-		Medium_Value=0.5
-		Dashed_Length=30
-		Dashed_Spacing=15
-		Mask=2
-		Duty=0.5
+		# 0 - none 
+		# 1 - dots
+		Type=1
+		# px/s 
+		Speed=694
+		Direction=-90
+		Coherence=1
+		# px, min 8 max 40
+		Dot_Size=6
+		# 255 - white, 0 - black
+		Dot_Color=0
+		Dot_Max_Count=5000
+		# 0 for infinite
+		Life_Time=1000
 	}
 
 	# medium layer, underneath Noise, over Background
 	Shape
 	{
-		Horizontal_Offset=110
-		Ellipse_X=100
-		Ellipse_Y=100
+		Field_Scale=1
+		Scale=1
+		Background_Color=255
+		Ellipse_X=160
+		Ellipse_Y=160
 
-		Type=3
-		Speed=20
-		Direction=0
-		Width=15
-		Amplitude=0.4
-		Medium_Value=0.5
-		Dashed_Length=30
-		Dashed_Spacing=15
-		Mask=3
-		Duty=0.5
+        	1-dots
+        	Type=1
+
+		Horizontal_Offset=164
+
+		Speed=347
+		Direction=-90
+		Coherence=1
+		Dot_Size=6
+		Dot_Color=0
+		Dot_Max_Count=5000
+		Life_Time=1000
 	}
 
 	# top layer, over Background & Shape
@@ -80,8 +87,10 @@ Positive
 		# 0 - none 
 		# 1 - dots
 		Type=0
-		Dot_Size=4
-		Dot_Color=128
+		Speed_X=0
+		Speed_Y=0
+		Dot_Size=6
+		Dot_Color=0
 		Dot_Max_Count=2000
 		Life_Time=0.2
 	}
@@ -92,17 +101,21 @@ Negative
 {
 	Background
 	{
-		Direction=45
+		Direction=-90
+		Speed=694
 	}
 	Shape
 	{
-		Ellipse_X=50
-		Ellipse_Y=200
-		Horizontal_Offset=110
-		Speed=20
-		Direction=PARAM
+		Horizontal_Offset=164
+		Direction=-90
+		Field_Scale = PARAM
+		#Scale = PARAM
+		#Ellipse_Y=PARAM
+		#Background_Color=255
 	}
 }
+
+
 
 
 

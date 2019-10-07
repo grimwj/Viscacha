@@ -178,6 +178,7 @@ public class Trials
     private void Trial_Staircase(int trials)
     {
         Vizcacha2.logger.MyLogger_WriteLine("New staricase trial begins");
+        Vizcacha2.trackerComm.SendMessage("Staircase trial number " + trials + ".");
         
         current_positive = Trials_Randomize();
         selection_side = "none";
@@ -438,6 +439,7 @@ public class Trials
     
     private void Trial_Constant(int trials)
     {
+        Vizcacha2.trackerComm.SendMessage("Constant trial number " + trials + ".");
         Vizcacha2.logger.MyLogger_WriteLine("New constant trial begins");
         
         System.out.println("Trial begins..." + trials + "max: " + (Vizcacha2.reader.Constant_Definition_Level.length * Vizcacha2.reader.Constant_Definition_Repeat));
@@ -454,6 +456,11 @@ public class Trials
         // liczenie rewersali- potrzebne sledzenie historii zmian
         int index = (int) (trials / Vizcacha2.reader.Constant_Definition_Repeat);
         double current_constant_factor = Vizcacha2.reader.Constant_Definition_Level[index];
+        
+        if (Vizcacha2.config_reader.overwrite_level != null)
+        {
+            current_constant_factor = Vizcacha2.config_reader.overwrite_level[index];
+        }
         Vizcacha2.disp.panel.New_Trial_Panel(current_positive, 0, current_constant_factor, LoadExperimentData.Experiment_Type_Constant_String);
 
         ValueHistory[trials] = Vizcacha2.disp.panel.param_value;
