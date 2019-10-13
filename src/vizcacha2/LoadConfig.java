@@ -76,6 +76,13 @@ public class LoadConfig
     public static final String OverwriteLevel_String = "overwrite_level=";
     public double[] overwrite_level;
     
+    public static final String FixedTrialTime_String = "fixed_trial_time=";
+    public int fixed_trial_time;
+    
+    public static final String ScreenSelect_String = "screen_select=";
+    public int screen_select=1;
+    
+    
     private int filename_flag = 0;
     private int sweep_flag = 0;
     
@@ -279,8 +286,21 @@ public class LoadConfig
             KEY_START = Integer.parseInt(line);
             Keyboard_inputs.KEYBOARD_S = KEY_START;
         }
-        
+        if (line.contains(FixedTrialTime_String))
+        {
+            line = line.replace(FixedTrialTime_String, "");
+            fixed_trial_time = Integer.parseInt(line);
+        }
+        if (line.contains(ScreenSelect_String))
+        {
+            line = line.replace(ScreenSelect_String, "");
+            screen_select = Integer.parseInt(line);
+        }    
     }
+    
+    
+    
+    
 
     private void PassLine_reader(String line)
     {

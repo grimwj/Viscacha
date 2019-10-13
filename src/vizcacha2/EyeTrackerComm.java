@@ -1,11 +1,16 @@
 package vizcacha2;
 
 import com.srresearch.eyelink.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class EyeTrackerComm 
 {
     Tracker tracker;
     int use_tracker = 0;
+    int eyetracker_connected=0;
     
     EyeTrackerComm()
     {
@@ -19,6 +24,7 @@ public class EyeTrackerComm
         if (Vizcacha2.config_reader.use_eyetracker==1)
         {
             tracker.open();
+            eyetracker_connected = 1;
         }
         return 0;
     }
@@ -55,10 +61,11 @@ public class EyeTrackerComm
     
     public int FinishRecording()
     {
-        if (Vizcacha2.config_reader.use_eyetracker==1)
+        if (Vizcacha2.config_reader.use_eyetracker==1 && eyetracker_connected==1)
         {
             tracker.sendCommand("set_idle_mode");
             tracker.sendCommand("ShutDown");
+            eyetracker_connected = 0;
         }
         return 0;
     }
@@ -83,10 +90,20 @@ public class EyeTrackerComm
     
     public int ReceiveDataFile(String filename1, String filename2)
     {
-        if (Vizcacha2.config_reader.use_eyetracker==1)
+        if (Vizcacha2.config_reader.use_eyetracker==1  && eyetracker_connected==1)
         {
             filename2 = filename2.concat(".edf");
             tracker.receiveDataFile(filename1, filename2);
+            
+            String src = filename2;
+            String dst = Vizcacha2.writer.DirName + "\\" + filename2;
+        
+            try 
+            {
+                Files.copy(Paths.get(src), Paths.get(dst), StandardCopyOption.REPLACE_EXISTING);
+                Files.deleteIfExists(Paths.get(src)); 
+            } catch (IOException ex) {}
+            
         }
         return 0;
     }

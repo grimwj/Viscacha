@@ -32,7 +32,7 @@ Constant_Definition
 # MyFormat [s]
 Trial_Times
 {
-    Initial_Delay=2
+    Initial_Delay=0.5
     Screen_Change_Delay=2
     Max_Answer_Time=10.0
     Delay_After_Positive=0.1
@@ -47,7 +47,7 @@ Positive
 		Image=Images/background_gratings.png
 		# 0 - none 
 		# 1 - dots
-		Type=1
+		Type=4
 		# px/s 
 		Speed_X=50
 		Speed_Y=100

@@ -22,6 +22,7 @@ public class LoadExperimentData
     public String Experiment_Type;
     
     public static final String Background_String = "Background";
+    public static final String Screen_Change_Brightness_String = "Screen_Change_Brightness";
     public static final String Experiment_Repeat_String = "Experiment_Repeat";
     public static final String Experiment_Type_String = "Experiment_Type";
 
@@ -38,7 +39,7 @@ public class LoadExperimentData
     public static final String Stimuli_Shape_String = "Shape";
     public static final String Stimuli_Noise_String = "Noise";
     
-        //staircase definition
+    //staircase definition
     public static final String Staircase_Definition_Easiest_String = "Easiest";
     public static final String Staircase_Definition_Hardest_String = "Hardest";
     public static final String Staircase_Definition_Start_String = "Start";
@@ -54,10 +55,10 @@ public class LoadExperimentData
     
     //trial times
     public static final String Trial_Times_Initial_Delay_String = "Initial_Delay";
-    public static final String Trial_Times_Initial_Screen_Change_Delay_String = "Screen_Change_Delay";
-    public static final String Trial_Times_Initial_Max_Answer_Time_String = "Max_Answer_Time";
-    public static final String Trial_Times_Initial_Delay_After_Positive_String = "Delay_After_Positive";
-    public static final String Trial_Times_Initial_Threshold_Calc_Delay_String = "Threshold_Calc_Delay";
+    public static final String Trial_Times_Screen_Change_Delay_String = "Screen_Change_Delay";
+    public static final String Trial_Times_Max_Answer_Time_String = "Max_Answer_Time";
+    public static final String Trial_Times_Delay_After_Positive_String = "Delay_After_Positive";
+    public static final String Trial_Times_Threshold_Calc_Delay_String = "Threshold_Calc_Delay";
     
     //stimuli background
     public static final String Stimuli_Background_Image_String = "Image";
@@ -153,6 +154,7 @@ public class LoadExperimentData
     public int[] Fixation_Colors_Background = {255, 255, 255};
     
     public int Background = 0;
+    public int Screen_Change_Brightness = 0;
     public int Experiment_Repeat = 1;
     
     //staircase definition
@@ -171,10 +173,10 @@ public class LoadExperimentData
     
     //trial times
     public double Trial_Times_Initial_Delay;
-    public double Trial_Times_Initial_Screen_Change_Delay;
-    public double Trial_Times_Initial_Max_Answer_Time;
-    public double Trial_Times_Initial_Delay_After_Positive;
-    public double Trial_Times_Initial_Threshold_Calc_Delay;
+    public double Trial_Times_Screen_Change_Delay;
+    public double Trial_Times_Max_Answer_Time;
+    public double Trial_Times_Delay_After_Positive;
+    public double Trial_Times_Threshold_Calc_Delay;
     
     public int Change_In_Both=0;
     
@@ -457,6 +459,11 @@ public class LoadExperimentData
             else
                 Background = Integer.parseInt(line);
         }
+        if (line.contains(Screen_Change_Brightness_String+"="))
+        {
+            line = line.replace(Screen_Change_Brightness_String+"=", "");
+            Screen_Change_Brightness = Integer.parseInt(line);
+        }   
         if (line.contains(Experiment_Repeat_String+"="))
         {
             line = line.replace(Experiment_Repeat_String+"=", "");
@@ -624,25 +631,25 @@ public class LoadExperimentData
             line = line.replace(Trial_Times_Initial_Delay_String+"=", "");
             Trial_Times_Initial_Delay = Double.parseDouble(line);
         }
-        if (line.contains(Trial_Times_Initial_Screen_Change_Delay_String+"="))
+        if (line.contains(Trial_Times_Screen_Change_Delay_String+"="))
         {
-            line = line.replace(Trial_Times_Initial_Screen_Change_Delay_String+"=", "");
-            Trial_Times_Initial_Screen_Change_Delay = Double.parseDouble(line);
+            line = line.replace(Trial_Times_Screen_Change_Delay_String+"=", "");
+            Trial_Times_Screen_Change_Delay = Double.parseDouble(line);
         }
-        if (line.contains(Trial_Times_Initial_Max_Answer_Time_String+"="))
+        if (line.contains(Trial_Times_Max_Answer_Time_String+"="))
         {
-            line = line.replace(Trial_Times_Initial_Max_Answer_Time_String+"=", "");
-            Trial_Times_Initial_Max_Answer_Time = Double.parseDouble(line);
+            line = line.replace(Trial_Times_Max_Answer_Time_String+"=", "");
+            Trial_Times_Max_Answer_Time = Double.parseDouble(line);
         }
-        if (line.contains(Trial_Times_Initial_Delay_After_Positive_String+"="))
+        if (line.contains(Trial_Times_Delay_After_Positive_String+"="))
         {
-            line = line.replace(Trial_Times_Initial_Delay_After_Positive_String+"=", "");
-            Trial_Times_Initial_Delay_After_Positive = Double.parseDouble(line);
+            line = line.replace(Trial_Times_Delay_After_Positive_String+"=", "");
+            Trial_Times_Delay_After_Positive = Double.parseDouble(line);
         }
-        if (line.contains(Trial_Times_Initial_Threshold_Calc_Delay_String+"="))
+        if (line.contains(Trial_Times_Threshold_Calc_Delay_String+"="))
         {
-            line = line.replace(Trial_Times_Initial_Threshold_Calc_Delay_String+"=", "");
-            Trial_Times_Initial_Threshold_Calc_Delay = Double.parseDouble(line);
+            line = line.replace(Trial_Times_Threshold_Calc_Delay_String+"=", "");
+            Trial_Times_Threshold_Calc_Delay = Double.parseDouble(line);
         }
         if (line.contains("}"))
         {

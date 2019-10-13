@@ -28,9 +28,6 @@ public class Vizcacha2
         logger = new MyLogger();
         logger.MyLogger_WriteLine("Logger begins");
         
-        disp = new Display();
-        logger.MyLogger_WriteLine("Display layer initialized");
-        
         LoadAndBeginStimuli();
     }
     
@@ -68,6 +65,12 @@ public class Vizcacha2
         writer.MyFileWriter_WriteLine("Experiment type = " + reader.Experiment_Type);
         
         keyboard = new Keyboard_inputs();
+        
+        if (disp == null)
+        {
+            disp = new Display();
+            logger.MyLogger_WriteLine("Display layer initialized");
+        }
         
         if (serialComm == null)
             serialComm = new SerialComm();

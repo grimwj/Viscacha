@@ -5,34 +5,35 @@
 # zmienia sie skala, ok 0.2 (easy) do 1 (hard)
 
 Background=255
-Screen_Change_Brightness=128
 Experiment_Repeat=1
 
-#Experiment_Type=Constant
-#Constant_Definition 
-#{
-#	Repeat=3
-#	Level= 0.2, 0.4, 0.6, 0.8, 0.9
-#	Max_Trials=40
-#}
+Fixation_Colors_Background=100,200,150
+Fixation_Colors_Cross=50,66,20
 
-Experiment_Type=Staircase
-Staircase_Definition 
+Experiment_Type=Constant
+Constant_Definition 
 {
-    Easiest=0.5
-    Hardest=1
-    Start=0.6
-    Max_Reversals=4
-    Factor=0.1
-    Min_Reversals=4
-    Max_Trials=120
+	Repeat=2
+	Level= 0.2, 0.4, 0.6
 }
+
+#Experiment_Type=Staircase
+#Staircase_Definition 
+#{
+#    Easiest=0.5
+#    Hardest=1
+#    Start=0.6
+#    Max_Reversals=4
+#    Factor=0.1
+#    Min_Reversals=4
+#    Max_Trials=120
+#}
 
 # MyFormat [s]
 Trial_Times
 {
     Initial_Delay=0.5
-    Screen_Change_Delay=0.5
+    Screen_Change_Delay=2
     Max_Answer_Time=10.0
     Delay_After_Positive=0.1
     Threshold_Calc_Delay=0.5
@@ -43,18 +44,19 @@ Positive
 	# bottom layer, underneath Shape & Noise
 	Background
 	{
-		Image=Images/background_gratings.png
+		#Image=Images/background_gratings.png
 		# 0 - none 
 		# 1 - dots
-		Type=1
+		Type=5
 		# px/s 
-		Speed_X=50
-		Speed_Y=100
+		Speed_X=200
+		Speed_Y=0
 		# px, min 8 max 40
 		Dot_Size=6
 		# 255 - white, 0 - black
 		Dot_Color=0
-		Dot_Max_Count=0
+		Dot_Max_Count=3000
+		Coherence=1
 		# 0 for infinite
 		Life_Time=1000
 	}
@@ -62,7 +64,7 @@ Positive
 	# medium layer, underneath Noise, over Background
 	Shape
 	{
-		Image=Images/foreground_gratings.png
+		#Image=Images/foreground_gratings.png
 		Field_Scale=1
 		Scale=1
 		Background_Color=128
@@ -76,9 +78,9 @@ Positive
 
 		Speed_X=0
 		Speed_Y=400
-		Dot_Size=6
+		Dot_Size=5
 		Dot_Color=255
-		Dot_Max_Count=0
+		Dot_Max_Count=2000
 		Life_Time=1000
 	}
 
@@ -90,9 +92,9 @@ Positive
 		Type=0
 		Speed_X=0
 		Speed_Y=0
-		Dot_Size=6
+		Dot_Size=4
 		Dot_Color=128
-		Dot_Max_Count=2000
+		Dot_Max_Count=1000
 		Life_Time=0.2
 	}
 }

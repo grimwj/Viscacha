@@ -232,16 +232,21 @@ public class VizPanel extends JPanel
         this.repaint();
     }
     
+    public void PassScreenDimensions(int width, int height)
+    {
+        screen_width = width;
+        screen_height = height;
+        this.setSize(screen_width, screen_height);
+    }
+    
     
     public VizPanel()
     {
         screen_type=3;
         
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        screen_width = (int) screenSize.getWidth();
-        screen_height = (int) screenSize.getHeight();
-        
-        this.setSize(screen_width, screen_height);
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //screen_width = (int) screenSize.getWidth();
+        //screen_height = (int) screenSize.getHeight();
         
         this.setBackground(Background_Color);
         this.setVisible(true);
@@ -255,9 +260,12 @@ public class VizPanel extends JPanel
         
         super.paintComponent(g);
 
+        System.out.println("screen type = " + screen_type);
+        
         if (screen_type==0)
         {
-            g.setColor(ScreenChangeColor);
+            Color StartScreenColor = new Color(0, 0, 0);
+            g.setColor(StartScreenColor);
             g.fillRect(0, 0, screen_width, screen_height);
             PaintFocusPoint(g);
             
@@ -306,6 +314,8 @@ public class VizPanel extends JPanel
         
         if (screen_type==2)
         {
+            int ScreenChangeColorIntVal = Vizcacha2.reader.Screen_Change_Brightness;
+            ScreenChangeColor = new Color(ScreenChangeColorIntVal, ScreenChangeColorIntVal, ScreenChangeColorIntVal);
             g.setColor(ScreenChangeColor);
             g.fillRect(0, 0, screen_width, screen_height);
             PaintFocusPoint(g);
@@ -345,7 +355,7 @@ public class VizPanel extends JPanel
         VizPanel_StopAnimation();
         
         System.out.println("New trial panel");
-
+        
         if (positive_one==1)
         {
             PaintComponent_PreparePositive("left");
@@ -424,6 +434,19 @@ public class VizPanel extends JPanel
         if (LeftPanelNoiseType.equals("3"))
         {
             LeftPanelNoiseRectAnimation = new RectAnimation(screen_width/2, screen_height, LeftPanelNoiseMedium_Value, LeftPanelNoiseAmplitude, LeftPanelNoiseSpeed, LeftPanelNoiseDirection, LeftPanelNoiseWidth, LeftPanelNoiseDuty, LeftPanelNoiseMask, LeftPanelNoiseDashedLength, LeftPanelNoiseDashedSpacing);
+        }
+        if (LeftPanelBackgroundType.equals("5"))
+        {
+            color = new Color(LeftPanelBackgroundDotColor, LeftPanelBackgroundDotColor, LeftPanelBackgroundDotColor);
+            color2 = new Color(LeftPanelBackgroundDotColor2, LeftPanelBackgroundDotColor2, LeftPanelBackgroundDotColor2);
+            if (LeftPanelBackgroundSpeed!=0)
+            {
+                LeftPanelBackgroundSpeedX = (int) (LeftPanelBackgroundSpeed*Math.cos(Math.toRadians(LeftPanelBackgroundDirection)));
+                LeftPanelBackgroundSpeedY = (int) (LeftPanelBackgroundSpeed*Math.sin(Math.toRadians(LeftPanelBackgroundDirection)));
+            }
+            
+            LeftBackgroundDots = new Dots(x0, 2*x1, y0, y1, LeftPanelBackgroundDotSize, LeftPanelBackgroundSpeedX, LeftPanelBackgroundSpeedY, LeftPanelBackgroundMaxNumber, color, color2, LeftPanelBackgroundDotColorThreshold, (int) (1000*LeftPanelBackgroundLifeTimeS), 1, LeftPanelBackgroundCoherence);
+            LeftBackgroundDots.Dots_Synchro();            
         }
         
         x0 = screen_width/2 + 2*LeftPanelBackgroundDotSize;
@@ -1469,8 +1492,17 @@ public class VizPanel extends JPanel
                 
         Color color = new Color(LeftPanelBackgroundColor, LeftPanelBackgroundColor, LeftPanelBackgroundColor);
         
-        g.setColor(color);
-        g.fillRect(x0, y0, w, h);
+        if(!LeftPanelBackgroundType.equals("4") && !LeftPanelBackgroundType.equals("5"))
+        {
+            g.setColor(color);
+            g.fillRect(x0, y0, w, h);
+        }
+        
+        if(LeftPanelBackgroundType.equals("5"))
+        {
+            g.setColor(color);
+            g.fillRect(x0, y0, 2*w, h);
+        }
         
         if(LeftPanelBackgroundType.equals("0"))
         {
@@ -1478,8 +1510,7 @@ public class VizPanel extends JPanel
         }
         else if(LeftPanelBackgroundType.equals("1"))
         {
-            //System.out.println("Drawing left background type 1");
-            Rectangle2D.Double rect1 = new Rectangle2D.Double(0, 0, screen_width/2, screen_height);
+            Rectangle2D.Double rect1 = new Rectangle2D.Double(x0, y0, w, h);
             Area rect_clip = new Area(rect1);
             g.setClip(rect_clip);
             
@@ -1508,6 +1539,46 @@ public class VizPanel extends JPanel
         {
             g.setClip(null);
             LeftPanelBackgroundRectAnimation.RectAnimation_UpdateAndDrawLayer(g, 0, 0, screen_width/2, screen_height/2);
+        }
+        else if(LeftPanelBackgroundType.equals("4"))
+        {
+            Rectangle2D.Double rect1 = new Rectangle2D.Double(x0, y0, 2*w, h);
+            Area rect_clip = new Area(rect1);
+            g.setClip(rect_clip);
+            
+            if (LeftPanelBackgroundImage != null && !LeftPanelBackgroundImage.isEmpty())
+            {
+                try
+                {
+                    LeftBackgroundImage = ImageIO.read(new File(LeftPanelBackgroundImage));
+                    g.drawImage(LeftBackgroundImage, x0, y0, this);
+                }
+                catch (Exception e) {}
+            }
+            
+            g.setClip(null);
+        }
+        else if(LeftPanelBackgroundType.equals("5"))
+        {
+            Rectangle2D.Double rect1 = new Rectangle2D.Double(x0, y0, 2*w, h);
+            Area rect_clip = new Area(rect1);
+            g.setClip(rect_clip);
+            
+            if (LeftPanelBackgroundImage != null && !LeftPanelBackgroundImage.isEmpty())
+            {
+                try
+                {
+                    LeftBackgroundImage = ImageIO.read(new File(LeftPanelBackgroundImage));
+                    g.drawImage(LeftBackgroundImage, x0, y0, this);
+                }
+                catch (Exception e) {}
+            }
+            
+            LeftBackgroundDots.Dots_Update();
+            LeftBackgroundDots.Dots_SynchroUpdate();
+            LeftBackgroundDots.Dots_Draw(g); 
+            
+            g.setClip(null);
         }
         g.setClip(null);
     }
@@ -1615,8 +1686,11 @@ public class VizPanel extends JPanel
         
         Color color = new Color(RightPanelBackgroundColor, RightPanelBackgroundColor, RightPanelBackgroundColor);
         
-        g.setColor(color);
-        g.fillRect(x0, y0, w, h);
+        if(!LeftPanelBackgroundType.equals("4") && !LeftPanelBackgroundType.equals("5"))
+        {
+            g.setColor(color);
+            g.fillRect(x0, y0, w, h);
+        }
         
         if(RightPanelBackgroundType.equals("0"))
         {
@@ -1784,6 +1858,8 @@ public class VizPanel extends JPanel
     {
         ScreenChangeColor = new Color(color,color,color);
         screen_type = 2;
+        this.revalidate();
+        this.repaint();
     }
     
     private void PaintFocusPoint(Graphics g)

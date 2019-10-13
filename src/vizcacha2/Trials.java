@@ -42,6 +42,7 @@ public class Trials
     public Trials()
     {
         r = new Random();
+        Trials_Print_Dot_Density_Size();
     }
     
     public int ex_nbr;
@@ -68,6 +69,17 @@ public class Trials
                 trials_semaphore.acquire();
             } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
 
+            // init delay
+            Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
+            timer_thread = new Trials_Timer();
+            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay);
+            timer_thread.SetTimeMs(wait_time_ms);
+            timer_thread.start();
+            try 
+            {
+                trials_semaphore.acquire();
+            } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+            
             selection_side = "none";
             selection_positive = "none";
             reversal_flag="false";
@@ -94,7 +106,7 @@ public class Trials
                 Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
                 // Screen change delay
                 timer_thread = new Trials_Timer();
-                wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Screen_Change_Delay);
+                wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Screen_Change_Delay);
                 timer_thread.SetTimeMs(wait_time_ms);
                 timer_thread.start();
                 try 
@@ -154,7 +166,7 @@ public class Trials
             
             // Threshold calc delay
             timer_thread = new Trials_Timer();
-            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Threshold_Calc_Delay);
+            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Threshold_Calc_Delay);
             timer_thread.SetTimeMs(wait_time_ms);
             timer_thread.start();
             //System.out.println("\t\t\t\t\t\t\t\t\t\t wait time: " + wait_time_ms);
@@ -165,6 +177,18 @@ public class Trials
 
             trials_semaphore.release();
         }
+        
+        //tutaj log do eyetrackera
+        String filename = Vizcacha2.config_reader.patient_name;
+        filename = filename.concat("_");
+        filename = filename.concat(Vizcacha2.config_reader.filename_no_ext);
+        filename = filename.concat("_");
+        filename = filename.concat(Vizcacha2.writer.filename);
+        
+        String filename_tmp = "TMP";
+        
+        Vizcacha2.trackerComm.ReceiveDataFile(filename_tmp, filename);
+        Vizcacha2.trackerComm.FinishRecording();
         
         if (Vizcacha2.config_reader.sweep_files<=0)
         {
@@ -195,7 +219,7 @@ public class Trials
         
         // Max ans time delay
         timer_thread = new Trials_Timer();
-        wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Max_Answer_Time);
+        wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Max_Answer_Time);
         timer_thread.SetTimeMs(wait_time_ms);
         timer_thread.start();
         
@@ -259,7 +283,7 @@ public class Trials
         {
             selection_positive = "1";
             timer_thread = new Trials_Timer();
-            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay_After_Positive);
+            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Delay_After_Positive);
             timer_thread.SetTimeMs(wait_time_ms);
             timer_thread.start();
             try 
@@ -271,7 +295,7 @@ public class Trials
         {
             selection_positive = "1";
             timer_thread = new Trials_Timer();
-            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay_After_Positive);
+            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Delay_After_Positive);
             timer_thread.SetTimeMs(wait_time_ms);
             timer_thread.start();
             try 
@@ -304,7 +328,8 @@ public class Trials
     {
         System.out.println("trail response passed");
         selection_side = response;
-        timer_thread.end();
+        if (Vizcacha2.config_reader.fixed_trial_time==0)
+            timer_thread.end();
         //trials_semaphore.release();
     }
     
@@ -365,13 +390,25 @@ public class Trials
             Vizcacha2.writer.MyFileWriter_WriteLine("Starting experiment number " + (ex_nbr+1) + "...");
             Vizcacha2.writer.MyFileWriter_WriteLine("Trial" + ";" + "Duration" + ";" + "Selection" + ";" + "Correct" + ";" + "Success" + ";" + "Experimentator" + ";" + "External Stimuli" + ";" + "Constant value");
             
+            try {trials_semaphore.acquire();} 
+            catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+
             Vizcacha2.disp.panel.VizPanel_WaitForStart(0);
             
             try {trials_semaphore.acquire();} 
             catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
-
-            try {trials_semaphore.acquire();} 
-            catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+            
+            // init delay
+            Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
+            timer_thread = new Trials_Timer();
+            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay);
+            timer_thread.SetTimeMs(wait_time_ms);
+            timer_thread.start();
+            try 
+            {
+                trials_semaphore.acquire();
+            } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+            
             
             trials = 0; 
             
@@ -382,7 +419,7 @@ public class Trials
                 Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
                 // Screen change delay
                 timer_thread = new Trials_Timer();
-                wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Screen_Change_Delay);
+                wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Screen_Change_Delay);
                 timer_thread.SetTimeMs(wait_time_ms);
                 timer_thread.start();
                 try 
@@ -417,7 +454,7 @@ public class Trials
             
             // Threshold calc delay
             timer_thread = new Trials_Timer();
-            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Threshold_Calc_Delay);
+            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Threshold_Calc_Delay);
             timer_thread.SetTimeMs(wait_time_ms);
             timer_thread.start();
             //System.out.println("\t\t\t\t\t\t\t\t\t\t wait time: " + wait_time_ms);
@@ -428,6 +465,18 @@ public class Trials
             
             trials_semaphore.release();
         }
+        
+        //tutaj log do eyetrackera
+        String filename = Vizcacha2.config_reader.patient_name;
+        filename = filename.concat("_");
+        filename = filename.concat(Vizcacha2.config_reader.filename_no_ext);
+        filename = filename.concat("_");
+        filename = filename.concat(Vizcacha2.writer.filename);
+        
+        String filename_tmp = "TMP";
+        
+        Vizcacha2.trackerComm.ReceiveDataFile(filename_tmp, filename);
+        Vizcacha2.trackerComm.FinishRecording();
         
         if (Vizcacha2.config_reader.sweep_files<=0)
         {
@@ -467,7 +516,7 @@ public class Trials
 
         // Max ans time delay
         timer_thread = new Trials_Timer();
-        wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Max_Answer_Time);
+        wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Max_Answer_Time);
         timer_thread.SetTimeMs(wait_time_ms);
         timer_thread.start();
         
@@ -508,7 +557,7 @@ public class Trials
             selection_positive = "1";
             
             timer_thread = new Trials_Timer();
-            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay_After_Positive);
+            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Delay_After_Positive);
             timer_thread.SetTimeMs(wait_time_ms);
             timer_thread.start();
             try 
@@ -521,7 +570,7 @@ public class Trials
             selection_positive = "1";
             
             timer_thread = new Trials_Timer();
-            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay_After_Positive);
+            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Delay_After_Positive);
             timer_thread.SetTimeMs(wait_time_ms);
             timer_thread.start();
             try 
@@ -558,6 +607,147 @@ public class Trials
             
             correct_percent=0;
         }
+    }
+    
+    // returns dots/sr, dots/ang_deg, dot size
+    // http://www.mpia.de/homes/mathar/public/mathar20051002.pdf
+    private double[] Trials_Calculate_Dot_Density_Size(int number_of_dots, int dot_size_px)
+    {
+        double ret[] = new double[3];
+        double dots_screen_layer;
+        
+        if (Vizcacha2.disp.panel.LeftPanelBackgroundType=="1")
+            dots_screen_layer = 2*number_of_dots;
+        else
+            dots_screen_layer = number_of_dots;
+        
+        double alpha = Vizcacha2.width_mm / (2*Vizcacha2.distance_mm);
+        double beta = Vizcacha2.height_mm / (2*Vizcacha2.distance_mm);
+        
+        double ss_sqrt_numerator = 1 + alpha*alpha + beta*beta;
+        double ss_sqrt_denominator = (1 + alpha*alpha)*(1+beta*beta);
+        double screen_steradians = 4 * Math.acos( Math.sqrt(ss_sqrt_numerator/ss_sqrt_denominator) );
+        double dots_density_sr = dots_screen_layer / screen_steradians;
+        
+        double screen_square_degrees = screen_steradians / 3.0462e-4;
+        double dots_density_square_angles = dots_screen_layer / screen_square_degrees;
+        
+        double dot_size_angle = dot_size_px * Vizcacha2.pixel_to_angle_factor;
+        
+        ret[0] = dots_density_sr;
+        ret[1] = dots_density_square_angles;
+        ret[2] = dot_size_angle;
+        
+        return ret;
+    }
+    
+    private void Trials_Print_Dot_Density_Size()
+    {
+        String tmp;
+        double result[] = new double[3];
+        int dot_number, dot_size_px;
+        
+        // S+ Background
+        dot_number = Vizcacha2.reader.Positive_Background_Dot_Max_Count;
+        dot_size_px = Vizcacha2.reader.Positive_Background_Dot_Size;
+        result = Trials_Calculate_Dot_Density_Size(dot_number,dot_size_px);
+        tmp = "Dots/sr (S+ background layer): " + result[0];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dots/angular deg^2 (S+ background layer): " + result[1];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dot size angular deg^2 (S+ background layer): " + result[2];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        
+        // S- Background
+        if (Vizcacha2.reader.Negative_Background_Dot_Max_Count!=-1)
+            dot_number = Vizcacha2.reader.Negative_Background_Dot_Max_Count;
+        else
+            dot_number = Vizcacha2.reader.Positive_Background_Dot_Max_Count;
+        if (Vizcacha2.reader.Negative_Background_Dot_Size!=-1)
+            dot_size_px = Vizcacha2.reader.Negative_Background_Dot_Size;
+        else
+            dot_size_px = Vizcacha2.reader.Positive_Background_Dot_Size;
+        result = Trials_Calculate_Dot_Density_Size(dot_number,dot_size_px);
+        tmp = "Dots/sr (S- background layer): " + result[0];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dots/angular deg^2 (S- background layer): " + result[1];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dot size angular deg^2 (S- background layer): " + result[2];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp); 
+        
+        // S+ Shape
+        dot_number = Vizcacha2.reader.Positive_Shape_Dot_Max_Count;
+        dot_size_px = Vizcacha2.reader.Positive_Shape_Dot_Size;
+        result = Trials_Calculate_Dot_Density_Size(dot_number,dot_size_px);
+        tmp = "Dots/sr (S+ shape layer): " + result[0];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dots/angular deg^2 (S+ shape layer): " + result[1];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dot size angular deg^2 (S+ shape layer): " + result[2];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        
+        // S- Shape
+        if (Vizcacha2.reader.Negative_Shape_Dot_Max_Count!=-1)
+            dot_number = Vizcacha2.reader.Negative_Shape_Dot_Max_Count;
+        else
+            dot_number = Vizcacha2.reader.Positive_Shape_Dot_Max_Count;
+        if (Vizcacha2.reader.Negative_Shape_Dot_Size!=-1)
+            dot_size_px = Vizcacha2.reader.Negative_Shape_Dot_Size;
+        else
+            dot_size_px = Vizcacha2.reader.Positive_Shape_Dot_Size;
+        result = Trials_Calculate_Dot_Density_Size(dot_number,dot_size_px);
+        tmp = "Dots/sr (S- shape layer): " + result[0];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dots/angular deg^2 (S- shape layer): " + result[1];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dot size angular deg^2 (S- shape layer): " + result[2];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp); 
+        
+        // S+ Noise
+        dot_number = Vizcacha2.reader.Positive_Noise_Dot_Max_Count;
+        dot_size_px = Vizcacha2.reader.Positive_Noise_Dot_Size;
+        result = Trials_Calculate_Dot_Density_Size(dot_number,dot_size_px);
+        tmp = "Dots/sr (S+ noise layer): " + result[0];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dots/angular deg^2 (S+ noise layer): " + result[1];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dot size angular deg^2 (S+ noise layer): " + result[2];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        
+        // S- Shape
+        if (Vizcacha2.reader.Negative_Noise_Dot_Max_Count!=-1)
+            dot_number = Vizcacha2.reader.Negative_Noise_Dot_Max_Count;
+        else
+            dot_number = Vizcacha2.reader.Positive_Noise_Dot_Max_Count;
+        if (Vizcacha2.reader.Negative_Noise_Dot_Size!=-1)
+            dot_size_px = Vizcacha2.reader.Negative_Noise_Dot_Size;
+        else
+            dot_size_px = Vizcacha2.reader.Positive_Noise_Dot_Size;
+        result = Trials_Calculate_Dot_Density_Size(dot_number,dot_size_px);
+        tmp = "Dots/sr (S- noise layer): " + result[0];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dots/angular deg^2 (S- noise layer): " + result[1];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);
+        tmp = "Dot size angular deg^2 (S- noise layer): " + result[2];
+        tmp = tmp.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(tmp);         
     }
     
     
