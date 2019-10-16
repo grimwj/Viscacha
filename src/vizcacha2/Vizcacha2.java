@@ -20,6 +20,8 @@ public class Vizcacha2
     
     public static EyeTrackerComm trackerComm;
     
+    public static boolean firstrun = true;
+    
     public static void main(String[] args) 
     {
         serialComm = null;

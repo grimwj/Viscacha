@@ -82,6 +82,8 @@ public class LoadConfig
     public static final String ScreenSelect_String = "screen_select=";
     public int screen_select=1;
     
+    public static final String ScreenCircleCutout_String = "screen_circle_cutout=";
+    public int screen_circle_cutout=0;
     
     private int filename_flag = 0;
     private int sweep_flag = 0;
@@ -296,6 +298,14 @@ public class LoadConfig
             line = line.replace(ScreenSelect_String, "");
             screen_select = Integer.parseInt(line);
         }    
+        if (line.contains(ScreenCircleCutout_String))
+        {
+            line = line.replace(ScreenCircleCutout_String, "");
+            screen_circle_cutout = Integer.parseInt(line);
+        }    
+        
+        
+        
     }
     
     

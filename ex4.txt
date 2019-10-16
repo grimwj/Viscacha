@@ -1,7 +1,7 @@
 Fixation_Colors_Background=255,0,0
 Fixation_Colors_Cross=20,100,220
 
-Background=255
+Background=0
 Experiment_Repeat=1
 
 #Experiment_Type=Constant
@@ -31,18 +31,21 @@ Trial_Times
     Screen_Change_Delay=0.5
     Max_Answer_Time=10.0
     Delay_After_Positive=0.1
-    Threshold_Calc_Delay=20
+    Threshold_Calc_Delay=0.5
 }
 
 Positive 
 {
 	Background
 	{
-		Type=2
+		Type=3
 		Speed=100
 		Width=50
 		Medium_Value=0.5
 		Amplitude=0.3
+		Duty=0.8
+		Dashed_Length=100
+		Dashed_Spacing=0
 		Direction=45
 		Life_Time=1000
 		Mask=3
@@ -56,9 +59,12 @@ Positive
 		Ellipse_Y=200
 		Background_Color=128
 		
-        	Type=2
+        	Type=3
 		Medium_Value=0.3
 		Amplitude=0.2
+		Duty=0.4
+		Dashed_Length=100
+		Dashed_Spacing=0
 		Width=25
 		Horizontal_Offset=164
 		Speed=300

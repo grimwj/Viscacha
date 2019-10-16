@@ -33,6 +33,10 @@ public class SineAnimation extends VizPanel
     
     public SineAnimation(int image_width, int image_height, double medium_value, double amplitude, int speed, int direction, int width, int mask)
     {   
+        screen_width = Vizcacha2.disp.panel.screen_width;
+        screen_height = Vizcacha2.disp.panel.screen_height;
+        ScreenCircleCutout = Vizcacha2.disp.panel.ScreenCircleCutout;
+        
         scale_factor = (double) (width)/speed;
         
         this.angle = direction;
@@ -112,11 +116,13 @@ public class SineAnimation extends VizPanel
         
         at.translate(translate_img_x, translate_img_y);
         
-        Rectangle2D.Double rect = new Rectangle2D.Double(pos_x,pos_y,image_width,image_height);
-        Area rectangle = new Area(rect);
+        //Rectangle2D.Double rect = new Rectangle2D.Double(pos_x,pos_y,image_width,image_height);
+        //Area rectangle = new Area(rect);
+        
+        Screen_Circle_Rect_Cutout(g, 0, pos_x, pos_y, image_width, image_height);
         
         Graphics2D g2d = (Graphics2D) g;
-        g.setClip(rectangle);
+        //g.setClip(rectangle);
         g2d.drawImage(image, at, null);
     }
     

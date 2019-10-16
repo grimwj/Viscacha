@@ -62,6 +62,7 @@ public class LoadExperimentData
     
     //stimuli background
     public static final String Stimuli_Background_Image_String = "Image";
+    public static final String Stimuli_Background_Background_Color_String = "Background_Color";
     public static final String Stimuli_Background_Type_String = "Type";
     public static final String Stimuli_Background_Speed_String = "Speed";
     public static final String Stimuli_Background_Direction_String = "Direction";
@@ -182,6 +183,7 @@ public class LoadExperimentData
     
     //Negative stimuli background 
     public String Negative_Background_Image;
+    public int Negative_Background_Color=-1;
     public String Negative_Background_Type;
     public double Negative_Background_Speed=-1;
     public double Negative_Background_Direction=-1;
@@ -257,6 +259,7 @@ public class LoadExperimentData
     
     //positive stimuli background 
     public String Positive_Background_Image;
+    public int Positive_Background_Color;
     public String Positive_Background_Type;
     public double Positive_Background_Speed;
     public double Positive_Background_Direction;
@@ -664,6 +667,11 @@ public class LoadExperimentData
             line = line.replace(Stimuli_Background_Image_String+"=", "");
             Positive_Background_Image = line;
         }
+        if (line.contains(Stimuli_Background_Background_Color_String+"="))
+        {
+            line = line.replace(Stimuli_Background_Background_Color_String+"=", "");
+            Positive_Background_Color = Integer.parseInt(line);
+        }
         if (line.contains(Stimuli_Background_Type_String+"="))
         {
             line = line.replace(Stimuli_Background_Type_String+"=", "");
@@ -1016,7 +1024,15 @@ public class LoadExperimentData
         {
             line = line.replace(Stimuli_Background_Image_String+"=", "");
             Negative_Background_Image = line;
-        }        
+        }
+        if (line.contains(Stimuli_Background_Background_Color_String+"="))
+        {
+            line = line.replace(Stimuli_Background_Background_Color_String+"=", "");
+            if (line.equals(PARAM_String))
+                PARAM = Stimuli_Background_Background_Color_String+Automaton_State_Negative_Background;
+            else
+                Negative_Background_Color = Integer.parseInt(line);
+        }
         if (line.contains(Stimuli_Background_Type_String+"="))
         {
             line = line.replace(Stimuli_Background_Type_String+"=", "");

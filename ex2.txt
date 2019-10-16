@@ -36,7 +36,7 @@ Trial_Times
     Screen_Change_Delay=2
     Max_Answer_Time=10.0
     Delay_After_Positive=0.1
-    Threshold_Calc_Delay=0.5
+    Threshold_Calc_Delay=20
 }
 
 Positive 

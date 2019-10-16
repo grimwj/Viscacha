@@ -55,30 +55,35 @@ public class Trials
         // loop for experiment count
         for(ex_nbr = 0; ex_nbr < Vizcacha2.reader.Experiment_Repeat; ex_nbr++)
         {   
-            Vizcacha2.keyboard.Keyboard_Activate_S();
-
-            try 
+            if (Vizcacha2.firstrun)
             {
-                trials_semaphore.acquire();
-            } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+                Vizcacha2.firstrun = false;
+                
+                Vizcacha2.keyboard.Keyboard_Activate_S();
 
-            Vizcacha2.disp.panel.VizPanel_WaitForStart(0);
+                try 
+                {
+                    trials_semaphore.acquire();
+                } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
 
-            try 
-            {
-                trials_semaphore.acquire();
-            } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+                Vizcacha2.disp.panel.VizPanel_WaitForStart(0);
 
-            // init delay
-            Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
-            timer_thread = new Trials_Timer();
-            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay);
-            timer_thread.SetTimeMs(wait_time_ms);
-            timer_thread.start();
-            try 
-            {
-                trials_semaphore.acquire();
-            } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+                try 
+                {
+                    trials_semaphore.acquire();
+                } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+
+                // init delay
+                Vizcacha2.disp.panel.VizPanel_ChangeScreen();
+                timer_thread = new Trials_Timer();
+                wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay);
+                timer_thread.SetTimeMs(wait_time_ms);
+                timer_thread.start();
+                try 
+                {
+                    trials_semaphore.acquire();
+                } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+            }
             
             selection_side = "none";
             selection_positive = "none";
@@ -103,7 +108,7 @@ public class Trials
             while ((reversals < Vizcacha2.reader.Staircase_Definition_Max_Reversals) && (trials < Vizcacha2.reader.Staircase_Definition_Max_Trials))
             {
                 // Display black screen
-                Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
+                Vizcacha2.disp.panel.VizPanel_ChangeScreen();
                 // Screen change delay
                 timer_thread = new Trials_Timer();
                 wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Screen_Change_Delay);
@@ -165,6 +170,7 @@ public class Trials
 //            }            
             
             // Threshold calc delay
+            Vizcacha2.disp.panel.VizPanel_ChangeScreen();
             timer_thread = new Trials_Timer();
             wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Threshold_Calc_Delay);
             timer_thread.SetTimeMs(wait_time_ms);
@@ -375,40 +381,44 @@ public class Trials
         
         for(ex_nbr = 0; ex_nbr < Vizcacha2.reader.Experiment_Repeat; ex_nbr++)
         {   
-            Vizcacha2.keyboard.Keyboard_Activate_S();
+            if (Vizcacha2.firstrun)
+            {
+                Vizcacha2.firstrun = false;
+            
+                Vizcacha2.keyboard.Keyboard_Activate_S();
+
+                try {trials_semaphore.acquire();} 
+                catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+
+                Vizcacha2.disp.panel.VizPanel_WaitForStart(0);
+
+                try {trials_semaphore.acquire();} 
+                catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+
+                // init delay
+                Vizcacha2.disp.panel.VizPanel_ChangeScreen();
+                timer_thread = new Trials_Timer();
+                wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay);
+                timer_thread.SetTimeMs(wait_time_ms);
+                timer_thread.start();
+                try 
+                {
+                    trials_semaphore.acquire();
+                } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+            }
             
             selection_side = "none";
             selection_positive = "none";
             reversal_flag="false";
             last_success = "none";
             experimentator = "";
-            
+
             int max_trials = Vizcacha2.reader.Constant_Definition_Level.length * Vizcacha2.reader.Constant_Definition_Repeat;
-            
+
             ValueHistory = new double[max_trials];
-            
+
             Vizcacha2.writer.MyFileWriter_WriteLine("Starting experiment number " + (ex_nbr+1) + "...");
             Vizcacha2.writer.MyFileWriter_WriteLine("Trial" + ";" + "Duration" + ";" + "Selection" + ";" + "Correct" + ";" + "Success" + ";" + "Experimentator" + ";" + "External Stimuli" + ";" + "Constant value");
-            
-            try {trials_semaphore.acquire();} 
-            catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
-
-            Vizcacha2.disp.panel.VizPanel_WaitForStart(0);
-            
-            try {trials_semaphore.acquire();} 
-            catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
-            
-            // init delay
-            Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
-            timer_thread = new Trials_Timer();
-            wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay);
-            timer_thread.SetTimeMs(wait_time_ms);
-            timer_thread.start();
-            try 
-            {
-                trials_semaphore.acquire();
-            } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
-            
             
             trials = 0; 
             
@@ -416,7 +426,7 @@ public class Trials
             while (trials < max_trials)
             {
                 // Display black screen
-                Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
+                Vizcacha2.disp.panel.VizPanel_ChangeScreen();
                 // Screen change delay
                 timer_thread = new Trials_Timer();
                 wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Screen_Change_Delay);
@@ -433,7 +443,7 @@ public class Trials
                 trials++;
             }
             
-            Vizcacha2.disp.panel.VizPanel_ChangeScreen(0);
+            Vizcacha2.disp.panel.VizPanel_ChangeScreen();
             
             correct_percent_total *= 100;
             int tmp_trial_count = Vizcacha2.reader.Constant_Definition_Repeat * Vizcacha2.reader.Constant_Definition_Level.length;

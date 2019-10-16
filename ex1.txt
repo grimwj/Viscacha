@@ -4,7 +4,7 @@
 # plik testowy dla ksztaltow, wariant FieldScale
 # zmienia sie skala, ok 0.2 (easy) do 1 (hard)
 
-Background=255
+Background=128
 Screen_Change_Brightness=128
 Experiment_Repeat=1
 
@@ -35,7 +35,7 @@ Trial_Times
     Screen_Change_Delay=0.5
     Max_Answer_Time=10.0
     Delay_After_Positive=0.1
-    Threshold_Calc_Delay=0.5
+    Threshold_Calc_Delay=20
 }
 
 Positive 
@@ -46,7 +46,7 @@ Positive
 		Image=Images/background_gratings.png
 		# 0 - none 
 		# 1 - dots
-		Type=1
+		Type=5
 		# px/s 
 		Speed_X=50
 		Speed_Y=100
