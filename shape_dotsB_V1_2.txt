@@ -5,17 +5,19 @@
 # zmienia sie skala, ok 0.2 (easy) do 1 (hard)
 
 Background=255
+Screen_Change_Brightness=255
 Experiment_Repeat=1
+Fixation_Colors_Background=0,0,0
+Fixation_Colors_Cross=255,255,255
 
-#Experiment_Type=Constant
-#Constant_Definition 
-#{
-#	Repeat=3
-#	Level= 0.2, 0.4, 0.6, 0.8, 0.9
-#	Max_Trials=40
-#}
+Experiment_Type=Constant
+Constant_Definition 
+{
+	Repeat=10
+	Level=0.5
+}
 
-Experiment_Type=Staircase
+#Experiment_Type=Staircase
 Staircase_Definition 
 {
     Easiest=0.5
@@ -30,11 +32,11 @@ Staircase_Definition
 # MyFormat [s]
 Trial_Times
 {
-    Initial_Delay=2
-    Screen_Change_Delay=0.5
-    Max_Answer_Time=10.0
-    Delay_After_Positive=0.3
-    Threshold_Calc_Delay=0.5
+    Initial_Delay=6.0
+    Screen_Change_Delay=0.0
+    Max_Answer_Time=4.0
+    Delay_After_Positive=0.0
+    Threshold_Calc_Delay=6.0
 }
 
 Positive 
@@ -42,18 +44,19 @@ Positive
 	# bottom layer, underneath Shape & Noise
 	Background
 	{
+		Background_Color=255
 		# 0 - none 
 		# 1 - dots
-		Type=1
+		Type=5
 		# px/s 
-		Speed=69
+		Speed=142
 		Direction=-90
 		Coherence=1
 		# px, min 8 max 40
-		Dot_Size=6
+		Dot_Size=8
 		# 255 - white, 0 - black
 		Dot_Color=0
-		Dot_Max_Count=5000
+		Dot_Max_Count=1123
 		# 0 for infinite
 		Life_Time=1000
 	}
@@ -64,20 +67,20 @@ Positive
 		Field_Scale=1
 		Scale=1
 		Background_Color=255
-		Ellipse_X=160
-		Ellipse_Y=160
+		Ellipse_X=180
+		Ellipse_Y=180
 
         	1-dots
         	Type=1
 
-		Horizontal_Offset=164
+		Horizontal_Offset=211
 
-		Speed=34
+		Speed=71
 		Direction=-90
 		Coherence=1
-		Dot_Size=6
+		Dot_Size=8
 		Dot_Color=0
-		Dot_Max_Count=5000
+		Dot_Max_Count=1123
 		Life_Time=1000
 	}
 
@@ -89,7 +92,7 @@ Positive
 		Type=0
 		Speed_X=0
 		Speed_Y=0
-		Dot_Size=6
+		Dot_Size=8
 		Dot_Color=128
 		Dot_Max_Count=2000
 		Life_Time=0.2
@@ -102,11 +105,11 @@ Negative
 	Background
 	{
 		Direction=-90
-		Speed=69
+		Speed=142
 	}
 	Shape
 	{
-		Horizontal_Offset=164
+		Horizontal_Offset=211
 		Direction=-90
 		Field_Scale = PARAM
 		#Scale = PARAM
@@ -114,6 +117,8 @@ Negative
 		#Background_Color=255
 	}
 }
+
+
 
 
 

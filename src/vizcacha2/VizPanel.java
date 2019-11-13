@@ -1,10 +1,8 @@
  package vizcacha2;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -14,8 +12,6 @@ import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class VizPanel extends JPanel 
@@ -368,7 +364,7 @@ public class VizPanel extends JPanel
     {
         VizPanel_StopAnimation();
         
-        System.out.println("New trial panel");
+        //System.out.println("New trial panel");
         
         if (positive_one==1)
         {

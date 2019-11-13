@@ -5,10 +5,6 @@
 # zmienia sie skala, ok 0.2 (easy) do 1 (hard)
 
 Background=255
-Screen_Change_Brightness=128
-Fixation_Colors_Background=255,255,255
-Fixation_Colors_Cross=0,0,0
-
 Experiment_Repeat=1
 
 #Experiment_Type=Constant
@@ -24,7 +20,7 @@ Staircase_Definition
 {
     Easiest=0.5
     Hardest=1
-    Start=0.6
+    Start=0.51
     Max_Reversals=4
     Factor=0.1
     Min_Reversals=4
@@ -36,9 +32,9 @@ Trial_Times
 {
     Initial_Delay=2
     Screen_Change_Delay=0.5
-    Max_Answer_Time=4.0
+    Max_Answer_Time=10.0
     Delay_After_Positive=0.3
-    #Threshold_Calc_Delay=0.5
+    Threshold_Calc_Delay=0.5
 }
 
 Positive 
@@ -46,19 +42,18 @@ Positive
 	# bottom layer, underneath Shape & Noise
 	Background
 	{
-		Background_Color=255
 		# 0 - none 
 		# 1 - dots
 		Type=1
 		# px/s 
-		Speed=500
+		Speed=347
 		Direction=-90
 		Coherence=1
 		# px, min 8 max 40
-		Dot_Size=5
+		Dot_Size=6
 		# 255 - white, 0 - black
 		Dot_Color=0
-		Dot_Max_Count=2465
+		Dot_Max_Count=5000
 		# 0 for infinite
 		Life_Time=1000
 	}
@@ -69,20 +64,20 @@ Positive
 		Field_Scale=1
 		Scale=1
 		Background_Color=255
-		Ellipse_X=120
-		Ellipse_Y=120
+		Ellipse_X=160
+		Ellipse_Y=160
 
         	1-dots
         	Type=1
 
-		Horizontal_Offset=139
+		Horizontal_Offset=164
 
-		Speed=500
+		Speed=347
 		Direction=-90
 		Coherence=0
-		Dot_Size=5
+		Dot_Size=6
 		Dot_Color=0
-		Dot_Max_Count=2465
+		Dot_Max_Count=5000
 		Life_Time=1000
 	}
 
@@ -94,7 +89,7 @@ Positive
 		Type=0
 		Speed_X=0
 		Speed_Y=0
-		Dot_Size=5
+		Dot_Size=6
 		Dot_Color=128
 		Dot_Max_Count=2000
 		Life_Time=0.2
@@ -107,11 +102,11 @@ Negative
 	Background
 	{
 		Direction=-90
-		Speed=500
+		Speed=347
 	}
 	Shape
 	{
-		Horizontal_Offset=139
+		Horizontal_Offset=164
 		Direction=-90
 		Field_Scale = PARAM
 		#Scale = PARAM

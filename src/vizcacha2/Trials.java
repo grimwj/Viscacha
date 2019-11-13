@@ -1,5 +1,7 @@
 package vizcacha2;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
@@ -12,11 +14,20 @@ public class Trials
     
     private long wait_time_ms;
     
+    long trial_start_time_ns;
+    long trial_end_time_ns;
+    
+    long current_time_ns;
+    long relative_time_ns;
+    double relative_time_s;
+    String relative_time_s_string;
+    
     private int reversals, trials;
     
     // 1 for left, 2 for right
     private int current_positive = 0;
     
+    String current_positive_str = "x";
     public String selection_side = "x";
     public String selection_positive = "x";
     public String reversal_flag="0";
@@ -49,7 +60,20 @@ public class Trials
     
     public void Trials_Staircase_Begin()
     {
+        if (Vizcacha2.firstrun)
+        {
+            String filename_tmp = "TMP";        
+            Vizcacha2.trackerComm.OpenConnection();
+            Vizcacha2.trackerComm.CreateDataFile(filename_tmp);
+            Vizcacha2.trackerComm.StartRecording();
+        }
+        
         Vizcacha2.logger.MyLogger_WriteLine("New staircase experiment begins");
+        String msg = "New stimuli file: " + Vizcacha2.reader.filename;
+        Vizcacha2.trackerComm.SendMessage(msg);
+        Vizcacha2.logger.MyLogger_WriteLine(msg);
+        
+        Vizcacha2.serialComm.scanner_thread.end();
         
         trials_semaphore = new Semaphore(1, true);
         // loop for experiment count
@@ -66,24 +90,29 @@ public class Trials
                     trials_semaphore.acquire();
                 } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
 
+                msg = "Start screen displayed";
+                Vizcacha2.trackerComm.SendMessage(msg);
+                Vizcacha2.logger.MyLogger_WriteLine(msg);
                 Vizcacha2.disp.panel.VizPanel_WaitForStart(0);
-
+                
                 try 
                 {
                     trials_semaphore.acquire();
                 } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
-
+                
                 // init delay
+                Trials_CVS_LOG_ScreenChange();
                 Vizcacha2.disp.panel.VizPanel_ChangeScreen();
                 timer_thread = new Trials_Timer();
                 wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay);
                 timer_thread.SetTimeMs(wait_time_ms);
                 timer_thread.start();
-                try 
-                {
-                    trials_semaphore.acquire();
-                } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
             }
+            
+            try 
+            {
+                trials_semaphore.acquire();
+            } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
             
             selection_side = "none";
             selection_positive = "none";
@@ -92,12 +121,11 @@ public class Trials
 
             ValueHistory = new double[Vizcacha2.reader.Staircase_Definition_Max_Trials];
             ThresholdHistory = new double[Vizcacha2.reader.Staircase_Definition_Max_Trials];
-
             ReversalOccurrences = new int[Vizcacha2.reader.Staircase_Definition_Max_Reversals];
 
             Vizcacha2.writer.MyFileWriter_WriteLine("Starting experiment number " + (ex_nbr+1) + "...");
 
-            Vizcacha2.writer.MyFileWriter_WriteLine("Trial" + ";" + "Duration" + ";" + "Selection" + ";" + "Correct" + ";" + "Success" + ";" + "Experimentator" + ";" + "External Stimuli" + ";" + "Reversal" + ";" + "Staircase level");
+            Vizcacha2.writer.MyFileWriter_WriteLine("Event time" + ";" + "Event type" + ";" + "Trial" + ";" + "Duration" + ";" + "Selection" + ";" + "Correct" + ";" + "Success" + ";" + "Experimentator" + ";" + "External Stimuli" + ";" + "Reversal" + ";" + "Staircase level");
 
             reversals = 0;
             trials = 0;
@@ -108,6 +136,10 @@ public class Trials
             while ((reversals < Vizcacha2.reader.Staircase_Definition_Max_Reversals) && (trials < Vizcacha2.reader.Staircase_Definition_Max_Trials))
             {
                 // Display black screen
+                msg = "Change screen displayed";
+                Vizcacha2.trackerComm.SendMessage(msg);
+                Vizcacha2.logger.MyLogger_WriteLine(msg);
+                Trials_CVS_LOG_ScreenChange();
                 Vizcacha2.disp.panel.VizPanel_ChangeScreen();
                 // Screen change delay
                 timer_thread = new Trials_Timer();
@@ -131,8 +163,8 @@ public class Trials
             int tmp_max = reversals-1;
             int tmp_min = tmp_max - Vizcacha2.reader.Staircase_Definition_Min_Reversals;
 
-            System.out.println(tmp_max);
-            System.out.println(tmp_min);
+            //System.out.println(tmp_max);
+            //System.out.println(tmp_min);
 
             for (int jj = tmp_max; jj>tmp_min;jj--)
             {
@@ -170,6 +202,10 @@ public class Trials
 //            }            
             
             // Threshold calc delay
+            msg = "Change screen displayed";
+            Vizcacha2.trackerComm.SendMessage(msg);
+            Vizcacha2.logger.MyLogger_WriteLine(msg);
+            Trials_CVS_LOG_ScreenChange();                
             Vizcacha2.disp.panel.VizPanel_ChangeScreen();
             timer_thread = new Trials_Timer();
             wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Threshold_Calc_Delay);
@@ -185,21 +221,14 @@ public class Trials
         }
         
         //tutaj log do eyetrackera
-        String filename = Vizcacha2.config_reader.patient_name;
-        filename = filename.concat("_");
-        filename = filename.concat(Vizcacha2.config_reader.filename_no_ext);
-        filename = filename.concat("_");
-        filename = filename.concat(Vizcacha2.writer.filename);
-        
-        String filename_tmp = "TMP";
-        
-        Vizcacha2.trackerComm.ReceiveDataFile(filename_tmp, filename);
-        Vizcacha2.trackerComm.FinishRecording();
+        // był
         
         if (Vizcacha2.config_reader.sweep_files<=0)
         {
+            msg = "All experiments finished, awaiting termination...";
+            Vizcacha2.trackerComm.SendMessage(msg);
+            Vizcacha2.logger.MyLogger_WriteLine(msg);
             Vizcacha2.disp.panel.PaintBlackScreenUntilEnd();
-            //Vizcacha2.disp.frame.dispatchEvent(new WindowEvent(Vizcacha2.disp.frame, WindowEvent.WINDOW_CLOSING));
         }
         
         Vizcacha2.LoadAndBeginStimuli();
@@ -219,6 +248,7 @@ public class Trials
         // Transfer data do Panel & display
         // Poza wyswietlaniem musi zostac przekazana informacja o wcisnietym klawiszu
         // liczenie rewersali- potrzebne sledzenie historii zmian
+        Trials_CVS_LOG_TrialStart();
         Vizcacha2.disp.panel.New_Trial_Panel(current_positive, current_staircase_factor, 0, LoadExperimentData.Experiment_Type_Staircase_String);
 
         ValueHistory[trials] = Vizcacha2.disp.panel.param_value;
@@ -241,7 +271,7 @@ public class Trials
 
         // tutaj podac karme
 
-        String current_positive_str = "l";
+        current_positive_str = "l";
         if (current_positive==2)
             current_positive_str = "r";
 
@@ -274,16 +304,10 @@ public class Trials
             ReversalOccurrences[reversals] = trials;
             reversals++;
             reversal_flag = "1";
-            System.out.println("Reversal occured");
         }
 
         if (selection_side!="none")
             last_success = selection_positive;
-
-        
-        //System.out.println("/t/t/t/t/t/t " + current_staircase_factor + "selection positive= " + selection_positive);
-        
-        //System.out.println("/t/t/t/t/t/t " + current_staircase_factor);
         
         if ((current_positive==1) && (selection_side=="l"))
         {
@@ -310,21 +334,19 @@ public class Trials
             } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
         }
         
-        String str = (trials+1) + ";" + ((double) timer_thread.duration_ms)/1000 + ";" + selection_side + ";" + current_positive_str + ";" + selection_positive + ";" + experimentator + ";" + stimuli + ";" + reversal_flag + ";" + current_staircase_factor;
-        str = str.replace('.', ',');
-        Vizcacha2.writer.MyFileWriter_WriteLine(str);
+        Trials_CVS_LOG_StaircaseTrialSummary();
         
         if (selection_positive == "1")
         {
             current_staircase_factor /= (1 + Vizcacha2.reader.Staircase_Definition_Factor);
-            //System.out.println("/t/t/t/t/t/t Decreasing, change factor=" + Vizcacha2.reader.Staircase_Definition_Factor + " current factor= "+ current_staircase_factor);
-            if (current_staircase_factor<=0) current_staircase_factor=0;
+            if (current_staircase_factor<=0) 
+                current_staircase_factor=0;
         }
         else
         {
             current_staircase_factor *= (1 + Vizcacha2.reader.Staircase_Definition_Factor);
-            //System.out.println("/t/t/t/t/t/t Increasing, change factor=" + Vizcacha2.reader.Staircase_Definition_Factor + " current factor= "+ current_staircase_factor);
-            if (current_staircase_factor>=1) current_staircase_factor=1;
+            if (current_staircase_factor>=1) 
+                current_staircase_factor=1;
         }        
         
         trials++;
@@ -332,11 +354,9 @@ public class Trials
     
     public void Trial_PassResponse(String response)
     {
-        System.out.println("trail response passed");
         selection_side = response;
         if (Vizcacha2.config_reader.fixed_trial_time==0)
             timer_thread.end();
-        //trials_semaphore.release();
     }
     
     public void Trial_PassExperimentatorRemark(String response)
@@ -374,7 +394,20 @@ public class Trials
     
     public void Trials_Constant_Begin()
     {
+        if (Vizcacha2.firstrun)
+        {
+            String filename_tmp = "TMP";        
+            Vizcacha2.trackerComm.OpenConnection();
+            Vizcacha2.trackerComm.CreateDataFile(filename_tmp);
+            Vizcacha2.trackerComm.StartRecording();
+        }        
+        
         Vizcacha2.logger.MyLogger_WriteLine("New constant experiment begins");
+        String msg = "New stimuli file: " + Vizcacha2.reader.filename;
+        Vizcacha2.trackerComm.SendMessage(msg);
+        Vizcacha2.logger.MyLogger_WriteLine(msg);
+        
+        Vizcacha2.serialComm.scanner_thread.end();
         
         trials_semaphore = new Semaphore(1, true);
         // loop for experiment count
@@ -390,22 +423,29 @@ public class Trials
                 try {trials_semaphore.acquire();} 
                 catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
 
+                msg = "Start screen displayed";
+                Vizcacha2.trackerComm.SendMessage(msg);
+                Vizcacha2.logger.MyLogger_WriteLine(msg);
+                
                 Vizcacha2.disp.panel.VizPanel_WaitForStart(0);
 
                 try {trials_semaphore.acquire();} 
                 catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
 
                 // init delay
+                Trials_CVS_LOG_ScreenChange();
                 Vizcacha2.disp.panel.VizPanel_ChangeScreen();
                 timer_thread = new Trials_Timer();
                 wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Initial_Delay);
                 timer_thread.SetTimeMs(wait_time_ms);
                 timer_thread.start();
-                try 
-                {
-                    trials_semaphore.acquire();
-                } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
             }
+            
+            try 
+            {
+                trials_semaphore.acquire();
+            } catch (InterruptedException ex) {Logger.getLogger(Trials.class.getName()).log(Level.SEVERE, null, ex);}
+                        
             
             selection_side = "none";
             selection_positive = "none";
@@ -418,7 +458,7 @@ public class Trials
             ValueHistory = new double[max_trials];
 
             Vizcacha2.writer.MyFileWriter_WriteLine("Starting experiment number " + (ex_nbr+1) + "...");
-            Vizcacha2.writer.MyFileWriter_WriteLine("Trial" + ";" + "Duration" + ";" + "Selection" + ";" + "Correct" + ";" + "Success" + ";" + "Experimentator" + ";" + "External Stimuli" + ";" + "Constant value");
+            Vizcacha2.writer.MyFileWriter_WriteLine("Event time" + ";" + "Event type" + ";" + "Trial" + ";" + "Duration" + ";" + "Selection" + ";" + "Correct" + ";" + "Success" + ";" + "Experimentator" + ";" + "External Stimuli" + ";" + "Constant value");
             
             trials = 0; 
             
@@ -426,6 +466,10 @@ public class Trials
             while (trials < max_trials)
             {
                 // Display black screen
+                msg = "Change screen displayed";
+                Vizcacha2.trackerComm.SendMessage(msg);
+                Vizcacha2.logger.MyLogger_WriteLine(msg);
+                Trials_CVS_LOG_ScreenChange();
                 Vizcacha2.disp.panel.VizPanel_ChangeScreen();
                 // Screen change delay
                 timer_thread = new Trials_Timer();
@@ -443,6 +487,10 @@ public class Trials
                 trials++;
             }
             
+            msg = "Change screen displayed";
+            Vizcacha2.trackerComm.SendMessage(msg);
+            Vizcacha2.logger.MyLogger_WriteLine(msg);
+            Trials_CVS_LOG_ScreenChange();
             Vizcacha2.disp.panel.VizPanel_ChangeScreen();
             
             correct_percent_total *= 100;
@@ -467,7 +515,7 @@ public class Trials
             wait_time_ms = (long) (1000*Vizcacha2.reader.Trial_Times_Threshold_Calc_Delay);
             timer_thread.SetTimeMs(wait_time_ms);
             timer_thread.start();
-            //System.out.println("\t\t\t\t\t\t\t\t\t\t wait time: " + wait_time_ms);
+
             try 
             {
                 trials_semaphore.acquire();
@@ -477,19 +525,13 @@ public class Trials
         }
         
         //tutaj log do eyetrackera
-        String filename = Vizcacha2.config_reader.patient_name;
-        filename = filename.concat("_");
-        filename = filename.concat(Vizcacha2.config_reader.filename_no_ext);
-        filename = filename.concat("_");
-        filename = filename.concat(Vizcacha2.writer.filename);
-        
-        String filename_tmp = "TMP";
-        
-        Vizcacha2.trackerComm.ReceiveDataFile(filename_tmp, filename);
-        Vizcacha2.trackerComm.FinishRecording();
+        // był
         
         if (Vizcacha2.config_reader.sweep_files<=0)
         {
+            msg = "All experiments finished, awaiting termination...";
+            Vizcacha2.trackerComm.SendMessage(msg);
+            Vizcacha2.logger.MyLogger_WriteLine(msg);
             Vizcacha2.disp.panel.PaintBlackScreenUntilEnd();
         }
     
@@ -500,8 +542,6 @@ public class Trials
     {
         Vizcacha2.trackerComm.SendMessage("Constant trial number " + trials + ".");
         Vizcacha2.logger.MyLogger_WriteLine("New constant trial begins");
-        
-        System.out.println("Trial begins..." + trials + "max: " + (Vizcacha2.reader.Constant_Definition_Level.length * Vizcacha2.reader.Constant_Definition_Repeat));
         
         Vizcacha2.keyboard.Keyboard_Activate_LR();
         
@@ -520,6 +560,7 @@ public class Trials
         {
             current_constant_factor = Vizcacha2.config_reader.overwrite_level[index];
         }
+        Trials_CVS_LOG_TrialStart();
         Vizcacha2.disp.panel.New_Trial_Panel(current_positive, 0, current_constant_factor, LoadExperimentData.Experiment_Type_Constant_String);
 
         ValueHistory[trials] = Vizcacha2.disp.panel.param_value;
@@ -542,7 +583,7 @@ public class Trials
 
         // tutaj podac karme
         
-        String current_positive_str = "l";
+        current_positive_str = "l";
         if (current_positive==2)
             current_positive_str = "r";
 
@@ -599,10 +640,8 @@ public class Trials
             correct_percent++;
             correct_percent_total++;
         }
-            
-        String str = (trials+1) + ";" + ((double) timer_thread.duration_ms)/1000 + ";" + selection_side + ";" + current_positive_str + ";" + selection_positive + ";" + experimentator + ";" + stimuli + ";" + ValueHistory[trials];
-        str = str.replace('.', ',');
-        Vizcacha2.writer.MyFileWriter_WriteLine(str);
+        
+        Trials_CVS_LOG_ConstantTrialSummary();
         
         if ( ((trials+1)%Vizcacha2.reader.Constant_Definition_Repeat) == 0)
         {
@@ -611,7 +650,7 @@ public class Trials
             
             String correct_percent_str = String.format ("%.2f", correct_percent);
             
-            str = "Most recent " + Vizcacha2.reader.Constant_Definition_Repeat + ":" + ";" + "---" + ";" + "---" + ";" + "---" + ";" + correct_percent_str + ";" + "---" + ";" + "---" + ";" + ValueHistory[trials];
+            String str = "Most recent " + Vizcacha2.reader.Constant_Definition_Repeat + ":" + ";" + "---" + ";" + "---" + ";" + "---" + ";" + correct_percent_str + ";" + "---" + ";" + "---" + ";" + ValueHistory[trials];
             str = str.replace('.', ',');
             Vizcacha2.writer.MyFileWriter_WriteLine(str);
             
@@ -795,6 +834,92 @@ public class Trials
     {
         trials_semaphore.release();
     }
+    
+    public void Trials_CVS_LOG_TrialStart()
+    {
+        current_time_ns = System.nanoTime();
+        trial_start_time_ns = current_time_ns;
+        relative_time_ns = current_time_ns - Vizcacha2.start_time_ns;
+        relative_time_s = (double) relative_time_ns/1000000000;
+        relative_time_s_string = Double.toString((new BigDecimal(relative_time_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        relative_time_s_string = relative_time_s_string.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(relative_time_s_string + ";" + "Trial display");
+    }
+    
+    public void Trials_CVS_LOG_ScreenChange()
+    {
+        current_time_ns = System.nanoTime();
+        relative_time_ns = current_time_ns - Vizcacha2.start_time_ns;
+        relative_time_s = (double) relative_time_ns/1000000000;
+        relative_time_s_string = Double.toString((new BigDecimal(relative_time_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        relative_time_s_string = relative_time_s_string.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(relative_time_s_string + ";" + "Screen change");
+    }
+    
+    public void Trials_CVS_LOG_LeftPressed()
+    {
+        current_time_ns = System.nanoTime();
+        relative_time_ns = current_time_ns - Vizcacha2.start_time_ns;
+        relative_time_s = (double) relative_time_ns/1000000000;
+        relative_time_s_string = Double.toString((new BigDecimal(relative_time_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        relative_time_s_string = relative_time_s_string.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(relative_time_s_string + ";" + "Left chosen");
+    }
+    
+    public void Trials_CVS_LOG_RightPressed()
+    {
+        current_time_ns = System.nanoTime();
+        relative_time_ns = current_time_ns - Vizcacha2.start_time_ns;
+        relative_time_s = (double) relative_time_ns/1000000000;
+        relative_time_s_string = Double.toString((new BigDecimal(relative_time_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        relative_time_s_string = relative_time_s_string.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(relative_time_s_string + ";" + "Right chosen");
+    }
+    
+    public void Trials_CVS_LOG_StartPressed()
+    {
+        current_time_ns = System.nanoTime();
+        relative_time_ns = current_time_ns - Vizcacha2.start_time_ns;
+        relative_time_s = (double) relative_time_ns/1000000000;
+        relative_time_s_string = Double.toString((new BigDecimal(relative_time_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        relative_time_s_string = relative_time_s_string.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(relative_time_s_string + ";" + "Scanner S");
+    }
+    
+    public void Trials_CVS_LOG_ConstantTrialSummary()
+    {
+        current_time_ns = System.nanoTime();
+        relative_time_ns = current_time_ns - Vizcacha2.start_time_ns;
+        relative_time_s = (double) relative_time_ns/1000000000;
+        relative_time_s_string = Double.toString((new BigDecimal(relative_time_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        
+        trial_end_time_ns = current_time_ns;
+        long trial_duration_ns = trial_end_time_ns - trial_start_time_ns;
+        double trial_duration_s = (double) trial_duration_ns/1000000000;
+        String trial_duration_s_string = Double.toString((new BigDecimal(trial_duration_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        
+        String str = relative_time_s_string + ";" + "Trial summary" + ";" + (trials+1) + ";" + trial_duration_s_string + ";" + selection_side + ";" + current_positive_str + ";" + selection_positive + ";" + experimentator + ";" + stimuli + ";" + ValueHistory[trials];
+        str = str.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(str);
+    }
+    
+    public void Trials_CVS_LOG_StaircaseTrialSummary()
+    {
+        current_time_ns = System.nanoTime();
+        trial_end_time_ns = current_time_ns;
+        relative_time_ns = current_time_ns - Vizcacha2.start_time_ns;
+        relative_time_s = (double) relative_time_ns/1000000000;
+        relative_time_s_string = Double.toString((new BigDecimal(relative_time_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        
+        trial_end_time_ns = current_time_ns;
+        long trial_duration_ns = trial_end_time_ns - trial_start_time_ns;
+        double trial_duration_s = (double) trial_duration_ns/1000000000;
+        String trial_duration_s_string = Double.toString((new BigDecimal(trial_duration_s).setScale(3, RoundingMode.HALF_UP)).doubleValue());
+        
+        String str = relative_time_s_string + ";" + "Trial summary" + ";" + (trials+1) + ";" + trial_duration_s_string + ";" + selection_side + ";" + current_positive_str + ";" + selection_positive + ";" + experimentator + ";" + stimuli + ";" + reversal_flag + ";" + current_staircase_factor;
+        str = str.replace('.', ',');
+        Vizcacha2.writer.MyFileWriter_WriteLine(str);
+    }
 }
 
 
@@ -831,7 +956,11 @@ class Trials_Timer extends Thread implements Runnable
             duration_ms=(end_time-start_time)/1000000;
             
             if (duration_ms >= time_ms)
+            {
+                //System.out.println(">>>Timer timeout at: " + end_time+ " duration_ms: " + duration_ms);
+                //System.out.println(">>>Started at: " + start_time+ " ended at: " + end_time);
                 break;
+            }
         }
 
         Trials.trials_semaphore.release();

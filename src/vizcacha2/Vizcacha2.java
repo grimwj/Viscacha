@@ -2,6 +2,10 @@ package vizcacha2;
 
 public class Vizcacha2 
 {
+    public static int debug_print = 0;
+    
+    public static long start_time_ns;
+    
     public static MyLogger logger; 
     public static Display disp;
     public static MyFileWriter writer;
@@ -24,6 +28,8 @@ public class Vizcacha2
     
     public static void main(String[] args) 
     {
+        start_time_ns = System.nanoTime();
+        
         serialComm = null;
         trackerComm = new EyeTrackerComm();
         

@@ -118,10 +118,18 @@ public class Keyboard_inputs
                         return true;
                     }
                     
-                    if (arg0.getKeyCode()==KEYBOARD_S && S_Active==true)
+                    if (arg0.getKeyCode()==KEYBOARD_S)
                     {
+                        if (S_Active==true)
+                            Keyboard_S_Action();
+                        
                         Keyboard_Deactivate_S();
-                        Keyboard_S_Action();
+                        
+                        String msg = "Scanner trigger received";
+                        Vizcacha2.trackerComm.SendMessage(msg);
+                        Vizcacha2.trials.Trials_CVS_LOG_StartPressed();
+                        Vizcacha2.logger.MyLogger_WriteLine(msg);
+                        
                         return true;
                     }
                     
@@ -151,12 +159,8 @@ public class Keyboard_inputs
         
         String filename = Vizcacha2.config_reader.patient_name;
         filename = filename.concat("_");
-        filename = filename.concat(Vizcacha2.config_reader.filename_no_ext);
-        filename = filename.concat("_");
         filename = filename.concat(Vizcacha2.writer.filename);
-        
         String filename_tmp = "TMP";
-        
         Vizcacha2.trackerComm.ReceiveDataFile(filename_tmp, filename);
         Vizcacha2.trackerComm.FinishRecording();
         
@@ -169,6 +173,7 @@ public class Keyboard_inputs
         Vizcacha2.logger.MyLogger_WriteLine("Left key pressed");
         Vizcacha2.trackerComm.SendMessage("Left stimuli chosen.");
         System.out.println("Left key pressed");
+        Vizcacha2.trials.Trials_CVS_LOG_LeftPressed();
         Vizcacha2.trials.Trial_PassResponse("l");
     }
     private void Keyboard_TOP_Action() throws InterruptedException
@@ -181,6 +186,7 @@ public class Keyboard_inputs
         Vizcacha2.logger.MyLogger_WriteLine("Right key pressed");
         Vizcacha2.trackerComm.SendMessage("Right stimuli chosen.");
         System.out.println("Right key pressed");
+        Vizcacha2.trials.Trials_CVS_LOG_RightPressed();
         Vizcacha2.trials.Trial_PassResponse("r");
     }
     private void Keyboard_DOWN_Action()
@@ -208,14 +214,7 @@ public class Keyboard_inputs
         Vizcacha2.logger.MyLogger_WriteLine("S key pressed");
         System.out.println("S key pressed");
         
-        String filename_tmp = "TMP";
-        
-        Vizcacha2.trackerComm.OpenConnection();
-        Vizcacha2.trackerComm.CreateDataFile(filename_tmp);
-        Vizcacha2.trackerComm.StartRecording();
-        
         Vizcacha2.trials.Trials_ReleaseSemaphore();
-        Vizcacha2.serialComm.scanner_thread.end();
     }
     
     private void Keyboard_T_Action()
